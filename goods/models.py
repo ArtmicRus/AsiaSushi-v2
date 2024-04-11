@@ -34,6 +34,7 @@ class Products(models.Model):
         # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
+        ordering = ("id",)
     
     def __str__(self) -> str:
         return f'{self.name} Количество - {self.quantity}'
