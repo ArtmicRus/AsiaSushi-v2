@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # Мои проекты
     'main',
     'goods',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +68,9 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # Для поиска шаблонов не только в проектах но и за их пределами
+        # То есть он найдёт шаблон в папке templates проекта
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
