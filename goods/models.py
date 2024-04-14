@@ -1,5 +1,6 @@
 from unicodedata import category
 from django.db import models
+from django.urls import reverse
 
 class Categories(models.Model):
     # verbose_name отображает в админке при создании объекта
@@ -39,6 +40,10 @@ class Products(models.Model):
     def __str__(self) -> str:
         return f'{self.name} Количество - {self.quantity}'
     
+    def get_absolute_url(self):
+        return reverse("catalog:product", kwargs={"product_slug": self.slug})
+    
+
     def display_id(self):
         return f"{self.id:05}"
     
