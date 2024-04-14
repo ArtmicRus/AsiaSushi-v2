@@ -1,3 +1,4 @@
+import re
 from django import forms
 
 
@@ -18,6 +19,25 @@ class CreateOrderForm(forms.Form):
             ("0", False),
             ("1", True),
         ],)
+    
+    # Пользовательский валидатор
+    # Нужно писать с припиской clean_название поля
+    def clean_phone_number(self):
+        #Получаем значение в поле data
+        data = self.cleaned_data['phone_number']
+
+        # Если не цифры (у телефона) то выкидываем ошибку
+        if not data.isdigit():
+            raise forms.ValidationError("Номер телефона должен содержать только цифры")
+
+        # re - регулярные выражения
+        # номер телефона должен состоять из 10 цифр
+        pattern = re.compile(r'^\d{10}$')
+        if not pattern.match(data):
+            raise forms.ValidationError("Неверный формат номера")
+
+        # Если всё норм то возвращаем данные
+        return data
 
 
 
