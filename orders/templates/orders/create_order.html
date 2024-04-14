@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% load cart_tags %}
+{% load carts_tags %}
 
 {% block content %}
 <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
@@ -86,6 +86,9 @@
                                     id="id_payment_on_get" value="1">
                                 <label class="form-check-label" for="id_payment_on_get">Наличными/картой
                                     при плучении</label>
+                                    {% if form.payment_on_get.errors %}
+                                        <div class="alert alert-danger alert-dismissible fade show">{{form.payment_on_get.errors}}</div>
+                                    {% endif %}
                             </div>
                         </div>
                     </div>
