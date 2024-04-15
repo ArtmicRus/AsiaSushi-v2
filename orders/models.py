@@ -15,6 +15,17 @@ class OrderitemQueryset(models.QuerySet):
             return sum(cart.quantity for cart in self)
         return 0
 
+class Status(models.Model):
+    name = models.CharField(max_length=30, verbose_name="Название статуса")
+
+    class Meta:
+        db_table = "Statuses"  # имя таблицы для модели
+        verbose_name = "Статус заказа"
+        verbose_name_plural = "Статусы заказа"
+
+    def __str__(self):
+        return f"Товар {self.name}"
+
 class Order(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, blank=True, null=True, verbose_name="Пользователь", default=None)
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
@@ -23,15 +34,15 @@ class Order(models.Model):
     delivery_address = models.TextField(null=True, blank=True, verbose_name="Адрес доставки")
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при получении")
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
-    status = models.CharField(max_length=50, default='В обработке', verbose_name="Статус заказа")
+    order_status = models.ForeignKey(to=Status, default=1, null=True, on_delete=models.CASCADE, verbose_name="Статус заказа")
 
     class Meta:
-        db_table = "order"
+        db_table = "Orders"
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
 
     def __str__(self):
-        return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name}"
+        return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name} | {self.order_status}"
 
 
 class OrderItem(models.Model):

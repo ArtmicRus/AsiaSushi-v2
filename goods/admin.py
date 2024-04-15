@@ -22,7 +22,6 @@ class ProductsAdmin(admin.ModelAdmin):
     # Вывод полей модели в админке
     list_display = [
         'name',
-        'quantity',
         'price',
         'discount'
     ]
@@ -41,7 +40,6 @@ class ProductsAdmin(admin.ModelAdmin):
     # Добавляет фильтры справа в админке по указанным полям
     list_filter = [
         'discount', 
-        'quantity', 
         'category'
     ]
 
@@ -54,6 +52,5 @@ class ProductsAdmin(admin.ModelAdmin):
         "image",
         # Если надо в 1 строку
         ("price","discount"),
-        "quantity"
     ]
     

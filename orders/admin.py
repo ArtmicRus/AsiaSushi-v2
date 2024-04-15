@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem, Status
 
 # admin.site.register(Order)
 # admin.site.register(OrderItem)
@@ -29,7 +29,7 @@ class OrderTabulareAdmin(admin.TabularInline):
     model = Order
     fields = (
         "requires_delivery",
-        "status",
+        "order_status",
         "payment_on_get",
         "is_paid",
         "created_timestamp",
@@ -51,11 +51,15 @@ class OrderAdmin(admin.ModelAdmin):
         "id",
         "user",
         "requires_delivery",
-        "status",
+        "order_status",
         "payment_on_get",
         "is_paid",
         "created_timestamp",
     )
+
+    list_editable = [
+        'order_status',
+    ]
 
     search_fields = (
         "id",
@@ -63,8 +67,14 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ("created_timestamp",)
     list_filter = (
         "requires_delivery",
-        "status",
+        "order_status",
         "payment_on_get",
         "is_paid",
     )
     inlines = (OrderItemTabulareAdmin,)
+
+@admin.register(Status)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+    )

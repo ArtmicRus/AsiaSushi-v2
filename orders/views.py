@@ -6,7 +6,8 @@ from django.shortcuts import redirect, render
 
 from carts.models import Cart
 from orders.forms import CreateOrderForm
-from orders.models import Order, OrderItem
+from orders.models import Order, OrderItem, Status
+from orders.utils import create_statuses
 
 @login_required 
 def create_order(request):
@@ -21,6 +22,10 @@ def create_order(request):
                     cart_items = Cart.objects.filter(user=user)
 
                     if cart_items.exists():
+                        # Проверяем есть ли стутусы
+                        start_status = Status.objects.filter(name='В обработке')
+                        if not start_status: # если статусов нет то создаём
+                            create_statuses()
                         # Создать заказ
                         order = Order.objects.create(
                             user=user,
@@ -37,9 +42,13 @@ def create_order(request):
                             quantity=cart_item.quantity
 
 
-                            if product.quantity < quantity:
-                                raise ValidationError(f'Недостаточное количество товара {name} на складе\
-                                                       В наличии - {product.quantity}')
+                            # Количество товаров но так как вырезал количество то не нужно
+                            # if product.quantity < quantity:
+                            #     raise ValidationError(f'Недостаточное количество товара {name} на складе\
+                            #                            В наличии - {product.quantity}')
+
+                            # product.quantity -= quantity
+                            # product.save()
 
                             OrderItem.objects.create(
                                 order=order,
@@ -48,8 +57,6 @@ def create_order(request):
                                 price=price,
                                 quantity=quantity,
                             )
-                            product.quantity -= quantity
-                            product.save()
 
                         # Очистить корзину пользователя после создания заказа
                         cart_items.delete()
