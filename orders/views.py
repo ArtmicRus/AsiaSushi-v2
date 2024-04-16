@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 
 from carts.models import Cart
 from orders.forms import CreateOrderForm
-from orders.models import Order, OrderItem, Status
+from orders.models import Order, OrderItem, OrderStatus
 from orders.utils import create_statuses
 
 @login_required 
@@ -23,9 +23,11 @@ def create_order(request):
 
                     if cart_items.exists():
                         # Проверяем есть ли стутусы
-                        start_status = Status.objects.filter(name='В обработке')
+                        start_status = OrderStatus.objects.filter(name='В обработке')
                         if not start_status: # если статусов нет то создаём
                             create_statuses()
+                            start_status = OrderStatus.objects.filter(name='В обработке')
+
                         # Создать заказ
                         order = Order.objects.create(
                             user=user,
@@ -33,6 +35,7 @@ def create_order(request):
                             requires_delivery=form.cleaned_data['requires_delivery'],
                             delivery_address=form.cleaned_data['delivery_address'],
                             payment_on_get=form.cleaned_data['payment_on_get'],
+                            order_status=start_status,
                         )
                         # Создать заказанные товары
                         for cart_item in cart_items:

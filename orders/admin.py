@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from orders.models import Order, OrderItem, Status
+from orders.models import Order, OrderItem, OrderStatus
 
 # admin.site.register(Order)
 # admin.site.register(OrderItem)
@@ -73,7 +73,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
     inlines = (OrderItemTabulareAdmin,)
 
-@admin.register(Status)
+@admin.register(OrderStatus)
 class StatusAdmin(admin.ModelAdmin):
     list_display = (
         "name",

@@ -15,7 +15,7 @@ class OrderitemQueryset(models.QuerySet):
             return sum(cart.quantity for cart in self)
         return 0
 
-class Status(models.Model):
+class OrderStatus(models.Model):
     name = models.CharField(max_length=30, verbose_name="Название статуса")
 
     class Meta:
@@ -34,7 +34,7 @@ class Order(models.Model):
     delivery_address = models.TextField(null=True, blank=True, verbose_name="Адрес доставки")
     payment_on_get = models.BooleanField(default=False, verbose_name="Оплата при получении")
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
-    order_status = models.ForeignKey(to=Status, default=1, null=True, on_delete=models.CASCADE, verbose_name="Статус заказа")
+    order_status = models.ForeignKey(to=OrderStatus, default=1, null=True, on_delete=models.CASCADE, verbose_name="Статус заказа")
 
     class Meta:
         db_table = "Orders"
