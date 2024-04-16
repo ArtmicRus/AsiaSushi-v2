@@ -92,7 +92,7 @@ def profile(request):
                     "orderitem_set",
                     queryset=OrderItem.objects.select_related("product"),
                 )
-            ).order_by("-id")
+            ).select_related('order_status').order_by("-id")
 
     context={
         'title':'Home - Кабинет',

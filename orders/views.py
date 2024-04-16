@@ -26,7 +26,6 @@ def create_order(request):
                         start_status = OrderStatus.objects.filter(name='В обработке')
                         if not start_status: # если статусов нет то создаём
                             create_statuses()
-                            start_status = OrderStatus.objects.filter(name='В обработке')
 
                         # Создать заказ
                         order = Order.objects.create(
@@ -35,7 +34,7 @@ def create_order(request):
                             requires_delivery=form.cleaned_data['requires_delivery'],
                             delivery_address=form.cleaned_data['delivery_address'],
                             payment_on_get=form.cleaned_data['payment_on_get'],
-                            order_status=start_status,
+                            order_status_id=1,
                         )
                         # Создать заказанные товары
                         for cart_item in cart_items:
