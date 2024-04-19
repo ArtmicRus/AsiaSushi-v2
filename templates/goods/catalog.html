@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% load static %}
+{% comment "Пояснение" %}По сути это загрузка метода в вёрстку чтобы мы могли его вызвать{% endcomment %}
 {% load goods_tags %}
 
+{% comment "Пояснение" %}Кнопка корзины мы можем внедрить её на страницу при помощи include {% endcomment %}
 {% block modal_cart %}
     {% include "includes/cart_button.html" %}
 {% endblock modal_cart %}
@@ -10,8 +12,8 @@
 {% block content %}
 <div class="row">
     <!-- Форма фильтров -->
-    <div class="dropdown mb-2">
-        <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown"
+    <div class="dropdown d-flex justify-content-end">
+        <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false"
             aria-expanded="false">
             Фильтры
         </button>
@@ -55,10 +57,10 @@
 
     {% if request.GET.q %}
     <h3 class="mt-4">Результат поиска по запросу {{ request.GET.q }}</h3>
-    {% if not goods %}
-        <link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
+        {% if not goods %}
+            <link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
         <h2 class="mt-4">По запросу ничего не найдено</h2>
-    {% endif %}
+        {% endif %}
     {% endif %}
     {% for product in goods %}
         <!-- Карта товара -->
@@ -67,7 +69,7 @@
                 {% if product.image %}
                     <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                 {% else %}
-                <img src="{% static "deps/images/Not found image.png" %}" class="card-img-top" alt="...">
+                <img src="{% static "deps/images/Not found image.jpg" %}" card-img-top alt="..." >
                 {% endif %}
                 <div class="card-body">
                     <a href="{% url "catalog:product" product.slug %}">
@@ -79,7 +81,7 @@
 
                         {% if product.discount %}
                             <p><s>{{ product.price }}</s> Руб.</p>
-                            <p><strong>{{ product.self_price }} $</strong></p>
+                            <p><strong>{{ product.self_price }} Руб.</strong></p>
                             <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
                         {% else  %}
                             <p><strong>{{ product.price }} Руб.</strong></p> 
@@ -107,7 +109,6 @@
         <ul class="pagination justify-content-center my-4">
             <div class="custom-shadow d-flex">
 
-
                 <li class="page-item {% if not goods.has_previous %} disabled {% endif %} ">
                 <a class="page-link" href="{% if goods.has_previous %}?{% change_params page=goods.previous_page_number %}
                 {% else %}
@@ -116,11 +117,11 @@
                 </li>
 
                 {% for page in goods.paginator.page_range %}
-                {% if page >= goods.number|add:-2 and page <= goods.number|add:+2 %}
-                    <li class="page-item {% if goods.number == page %} active {% endif %}" >
-                        <a class="page-link" href="?{% change_params page=page %}">{{ page }}</a>
-                    </li>
-                {% endif %}
+                    {% if page >= goods.number|add:-2 and page <= goods.number|add:+2 %}
+                        <li class="page-item {% if goods.number == page %} active {% endif %}" >
+                            <a class="page-link" href="?{% change_params page=page %}">{{ page }}</a>
+                        </li>
+                    {% endif %}
                 {% endfor %}
 
                 <li class="page-item {% if not goods.has_next %} disabled {% endif %} ">
@@ -141,7 +142,7 @@
 {% block footer %}
 <footer class="py-4 bg-dark">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2023</p>
+        <p class="m-0 text-center text-white">2024 - Азия суши Псков</p>
     </div>
 </footer>
 {% endblock footer %}

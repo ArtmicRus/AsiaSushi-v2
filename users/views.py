@@ -40,7 +40,7 @@ def login(request):
         form = UserLoginForm()
     
     context={
-        'title':'Home - Авторизация',
+        'title':'AsiaSushi - Авторизация',
         'form': form,
     }
     return render(request,'users/login.html',context)
@@ -68,7 +68,7 @@ def registration(request):
         form = UserRegistrationForm()
 
     context={
-        'title':'Home - Регистрация',
+        'title':'Регистрация',
         'form': form
     }
     return render(request,'users/registration.html',context)
@@ -95,14 +95,18 @@ def profile(request):
             ).select_related('order_status').order_by("-id")
 
     context={
-        'title':'Home - Кабинет',
+        'title':'Личный кабинет',
         'form': form,
         'orders': orders
     }
     return render(request,'users/profile.html',context)
 
 def users_cart(request):
-    return render(request, 'users/users_cart.html')
+        
+    context={
+        'title':'Корзина'
+    }
+    return render(request, 'users/users_cart.html', context)
 
 @login_required
 def logout(request):
