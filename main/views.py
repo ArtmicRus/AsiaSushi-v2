@@ -20,3 +20,11 @@ def about(request):
     }
 
     return render(request, 'main/about.html', context)
+
+def contact(request):
+    context = {
+        'title': 'AsiaSushi - Контактная информация',
+        'content': 'Контакты'
+    }
+
+    return render(request, 'main/contact.html', context)

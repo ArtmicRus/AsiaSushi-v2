@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="page-title">
+        <div class="large-wrapper">
+            <h1 class="text-white">{{ title }}</h1>
+        </div>
+    </div>
+    <div class="h2 position-relative align-center">
+        
+    </div>
+    <div class="mt-2 bg-white custom-shadow rounded">
+        <address>
+            Улица Алтаева, 1А 
+            <br>
+            <abbr title="Номера телефона">Тел:
+                610-559 <br>
+                610-558</abbr>
+            <div>
+            </div>
+        </address>
+        
+        <address>
+            <strong>Техническая поддержка::</strong>   <a href="mailto:Support@example.com">artmic2011@yandex.ru</a><br />
+            <strong>Отдел маркетинга:</strong> <a href="mailto:Marketing@example.com">artmic2011@yandex.ru</a>
+        </address>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    {% include "includes/footer.html" %}
+{% endblock footer %}
+

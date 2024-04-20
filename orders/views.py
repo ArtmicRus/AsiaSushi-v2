@@ -84,3 +84,9 @@ def create_order(request):
         'order': True,
     }
     return render(request, 'orders/create_order.html', context=context)
+
+
+@login_required 
+def delete_order(request, order_id):
+    Order.objects.get(id=order_id).delete()
+    return redirect(request.META['HTTP_REFERER'])

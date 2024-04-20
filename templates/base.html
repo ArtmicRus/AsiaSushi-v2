@@ -40,9 +40,8 @@
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Информация
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item  text-white" href="#">Доставка и оплата</a></li>
-                                <li><a class="dropdown-item  text-white" href="#">Контактная информация</a></li>
+                            <ul class="dropdown-menu mt-3">
+                                <li><a class="dropdown-item  text-white" href="{% url "main:contact" %}">Контактная информация</a></li>
                                 <li><a class="dropdown-item  text-white" href="{% url "main:about" %}">Про нас</a></li>
                             </ul>
                         </li>
@@ -59,8 +58,7 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Мой профиль
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item  text-white" href="carts/cart.html">Корзина</a></li>
+                                <ul class="dropdown-menu mt-3">
                                     <li><a class="dropdown-item  text-white" href="{% url "users:profile" %}">Личный кабинет</a>
                                     </li>
 

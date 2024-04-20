@@ -122,13 +122,19 @@
                                                 <tr>
                                                     <td><a class="text-white" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name }}</a></td>
                                                     <td>{{ item.quantity }}</td>
-                                                    <td>{{ item.price }}</td>
-                                                    <td>{{ item.products_price }}</td>
+                                                    <td>{{ item.price }} Руб.</td>
+                                                    <td>{{ item.products_price }} Руб.</td>
 
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
+                                        <div class="d-flex justify-content-start">
+                                            Итого = {{ order.total_price }}
+                                        </div>
+                                        <div class="d-flex justify-content-end">
+                                            <a class="btn btn-danger" href="{% url "orders:delete_order" order.id %}">Отменить заказ</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
