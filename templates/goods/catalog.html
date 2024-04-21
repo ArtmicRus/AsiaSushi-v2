@@ -11,8 +11,14 @@
 
 {% block content %}
 <div class="row">
+
+    <form class="d-flex" role="search" action="{% url "catalog:search" %}" method="get">
+        <input class="form-control me-2 d-flex" type="search" name="q" placeholder="Хочу роллы!" aria-label="Search">
+        <button class="btn btn-success text-white" type="submit">Поиск</button>
+    </form>
     <!-- Форма фильтров -->
-    <div class="dropdown d-flex justify-content-end">
+    <div class="dropdown d-flex pt-4 ">
+        
         <button class="btn btn-secondary dropdown-toggle btn-dark" type="button" data-bs-toggle="dropdown" data-bs-auto-close="false"
             aria-expanded="false">
             Фильтры
@@ -56,15 +62,14 @@
     </div>
 
     {% if request.GET.q %}
-    <h3 class="mt-4">Результат поиска по запросу {{ request.GET.q }}</h3>
+    <h3 class="mt-4 my-text">Результат поиска по запросу {{ request.GET.q }}</h3>
         {% if not goods %}
-            <link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
-        <h2 class="mt-4">По запросу ничего не найдено</h2>
+            <h2 class="mt-4 my-text">По вашему запросу ничего не найдено</h2>
         {% endif %}
     {% endif %}
     {% for product in goods %}
         <!-- Карта товара -->
-        <div class="col-lg-4 col-md-6 p-4">
+        <div class="col-lg-3 col-md-4 p-4">
             <div class="card border-primary rounded custom-shadow">
                 {% if product.image %}
                     <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">

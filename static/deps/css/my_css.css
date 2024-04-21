@@ -15,6 +15,19 @@ body {
   content: none;
 }
 
+.my-text{
+  color:white;
+  margin-left: 15px;
+}
+
+.text-in-cart{
+  vertical-align: middle
+}
+
+.text-in-card-of-product{
+  
+}
+
 .custom-shadow {
   box-shadow: 5px 5px 25px 19px #000000;
 }

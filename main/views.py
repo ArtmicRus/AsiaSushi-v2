@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -6,25 +7,28 @@ from goods.models import Categories
 def index(request):
 
     context = {
-        'title': 'AsiaSushi - Главная',
-        'content': 'Азия суши - Продажа суши и пиццы!'
+        'title': 'Азия суши - Главная',
+        'content': 'Азия суши - Продажа суши и пиццы!',
+        "year": datetime.now().year,
     }
 
     return render(request, 'main/index.html', context)
 
 def about(request):
     context = {
-        'title': 'AsiaSushi - О нас',
+        'title': 'Азия суши - О нас',
         'content': 'О нас',
-        'text_on_page': 'Тестовый текст о том почему у нас самые вкусные суши и пицца!!!'
+        "year": datetime.now().year,
+        'text_on_page': 'Тестовый текст о том почему у нас самые вкусные суши и пицца!!!',
     }
 
     return render(request, 'main/about.html', context)
 
 def contact(request):
     context = {
-        'title': 'AsiaSushi - Контактная информация',
-        'content': 'Контакты'
+        'title': 'Азия суши- Контактная информация',
+        'content': 'Контакты',
+        "year": datetime.now().year,
     }
 
     return render(request, 'main/contact.html', context)

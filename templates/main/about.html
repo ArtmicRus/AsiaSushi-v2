@@ -6,10 +6,50 @@
 {% endblock css %}
 
 {% block content %}
-    <div class="mt-5 pt-5 bg-white custom-shadow rounded">
-        <h2 class="m-2"><strong>{{ content }}</strong></h2>
-        <p class="m-2">{{ text_on_page }}</p>
+    <div class="page-title">
+        <div class="large-wrapper">
+            <h1 class="text-white">{{ title }}</h1>
+        </div>
     </div>
+    <div class="position-relative align-center mb-4">
+        <div class="mt-2 rounded bg-white">
+            <address class="m-3 pb-1">
+                <div class="h4 pt-4 text-center">
+                    Кафе "AsiaSushi" на ул.Алтаева, 1А 
+                </div>
+                <div class="px-4">
+                    <div class="h3">
+                        Доставка:
+                    </div>
+                    <div class="h6">
+                        Доставляем вкусную еду по доступным ценам!
+                    </div>
+                    <div class="text-danger">
+                        Заказы принимаются до <strong>22:30 по МСК</strong> <br>
+                        Минимальная сумма заказа на доставку <strong>800р</strong>
+                    </div>
+                </div>
+                <div class="px-4 pt-4">
+                    <div class="h3">
+                        Наши телефоны:
+                    </div>
+                    <div>
+                        <strong>610-559</strong> и <strong>610-558</strong>
+                    </div>
+                </div>
+                <address class="m-4">
+                    <strong>Техническая поддержка:</strong>   <a href="mailto:artmic2011@yandex.ru">artmic2011@yandex.ru</a><br />
+                    <strong>Разработчик сайта:</strong> <a href="mailto:artmic2011@yandex.ru">artmic2011@yandex.ru</a>
+                </address>
+            </address>
+        </div>
+    </div>
+    
+
+    <script class="py-3 my-3" type="text/javascript" charset="utf-8" 
+    async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ada6740f2bec83ff62a7295d3582cb080fe0be567b6021298226b282b767fa88e&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;scroll=true">
+    </script>
+
 {% endblock content %}
 
 {% block footer %}
