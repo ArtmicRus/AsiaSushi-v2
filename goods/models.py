@@ -16,6 +16,37 @@ class Categories(models.Model):
     def __str__(self) -> str:
         return self.name
 
+# class PromotionTerms(models.Model):
+
+#     is_need_min_sum_in_cart = models.BooleanField(default=False, verbose_name='Нужна ли минимальная сумма в заказе')
+#     min_sum_in_cart = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Минимальная сумма в заказе')
+
+#     is_need_exclude_caregory = models.BooleanField(default=False, verbose_name='Нужно ли Исключить товары определённой категории из акции')
+#     exclude_caregory = category = models.ForeignKey(to=Categories, on_delete=models.CASCADE,verbose_name='Исключаемая категория')
+
+
+
+    # class Meta: 
+    #     # Название таблицы в БД
+    #     db_table = 'promotionTerms'
+    #     # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
+    #     verbose_name = 'Условия акции'
+    #     verbose_name_plural = 'Условия акции'
+
+# class Promotions(models.Model):
+
+#     name = models.CharField(max_length=150,unique=True, verbose_name='Название')
+#     description = models.TextField(blank=True, null=True, verbose_name='Описание')
+#     image = models.ImageField(upload_to='promotions_images', blank=True, null=True, verbose_name='Изображение')
+#     promotion_terms = models.ForeignKey(to=PromotionTerms, on_delete=models.CASCADE,verbose_name='Условия акции')
+
+#     class Meta: 
+#         # Название таблицы в БД
+#         db_table = 'promotion'
+#         # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
+#         verbose_name = 'Акция'
+#         verbose_name_plural = 'Акции'
+
 class Products(models.Model):
 
     # verbose_name отображает в админке при создании объекта

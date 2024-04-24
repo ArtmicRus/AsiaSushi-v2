@@ -34,7 +34,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-white" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -94,15 +94,15 @@
                                 </ul>
                             </li>
                             <li>
-                                <a class="dropdown-item text-white" href="{% url "users:profile" %}">
+                                <a class="nav-item align-content-center" href="{% url "users:profile" %}">
                                     {% if user.image %}
                                         <img src="{{ user.image.url }}"
                                             alt="Аватар пользователя" class="img-fluid rounded-circle"
-                                            style="max-width: 35px;">
+                                            style="max-width: 36px;">
                                     {% else %}
                                         <img src="{% static "deps/images/baseavatar.jpg" %}"
                                             alt="Аватар пользователя" class="img-fluid rounded-circle"
-                                            style="max-width: 35px;">
+                                            style="max-width: 36px">
                                     {% endif %}
                                 </a>
 
