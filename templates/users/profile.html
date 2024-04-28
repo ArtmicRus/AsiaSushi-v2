@@ -2,12 +2,16 @@
 {% load static %}
 {% load carts_tags %}
 
+{% block modal_cart %}
+    {% include "includes/cart_button.html" %}
+{% endblock modal_cart %}
+
 {% block content %}
     <div class="row">
         <div class="container mt-5">
             <div class="row">
                 <!-- Профиль с данными пользователя -->
-                <div class="col-md-5">
+                <div class="col-md-8 mx-auto">
                     <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
                         <h3 class="text-center mb-4">Профиль пользователя</h3>
                         {% comment "" %} enctype - нужен когда передаём картинки в форме {% endcomment %}
@@ -76,14 +80,25 @@
                                             <div class="alert alert-danger alert-dismissible fade show">{{form.email.errors}}</div>
                                         {% endif %}
                                 </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="id_phone_number" class="form-label">Номер телефона*</label>
+                                    <input type="text" class="form-control" id="id_phone_number"
+                                        name="phone_number"
+                                        placeholder="Введите ваш номер телефона *XXX-XXX-XX-XX" 
+                                        value="{{ form.phone_number.value }}"
+                                        required>
+                                        {% if form.phone_number.errors %}
+                                            <div class="alert alert-danger alert-dismissible fade show">{{form.phone_number.errors}}</div>
+                                        {% endif %}
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-dark">Сохранить</button>
                         </form>
                     </div>
                 </div>
                 <!-- Корзина -->
-                {% user_carts request as carts %}
-                <div class="col-md-7">
+                {% comment %} {% user_carts request as carts %}
+                <div class="col-md-8">
                     <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
                         <h3 class="text-center mb-4">Корзина</h3>
                         <div class="container" id="cart-items-container">
@@ -92,7 +107,7 @@
                             <!-- Закончилась разметка корзины -->
                         </div>
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <!-- Оформленные заказы -->
                 <div class="col-md-12">
                     <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
@@ -124,16 +139,17 @@
                                                     <td>{{ item.quantity }}</td>
                                                     <td>{{ item.price }} Руб.</td>
                                                     <td>{{ item.products_price }} Руб.</td>
-
                                                 </tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
                                         <div class="d-flex justify-content-start">
-                                            Итого = {{ order.total_price }}
+                                            Итого = {{ order.full_price }}
                                         </div>
                                         <div class="d-flex justify-content-end">
-                                            <a class="btn btn-danger" href="{% url "orders:delete_order" order.id %}">Отменить заказ</a>
+                                            <a class="btn btn-danger {% if order.order_status.id > 1 %} disabled {% endif %}" 
+                                                href="{% url "orders:delete_order" order.id %}" 
+                                                > Отменить заказ</a>
                                         </div>
                                     </div>
                                 </div>

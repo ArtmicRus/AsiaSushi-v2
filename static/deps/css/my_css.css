@@ -11,6 +11,10 @@ body {
   flex-direction:column;
 }
 
+p {
+  margin-bottom: 0rem;
+}
+
 .dropdown-toggle::after {
   content: none;
 }

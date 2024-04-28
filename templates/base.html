@@ -72,13 +72,13 @@
                             </li>
                         {% endif %}
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right d-flex flex-row">
                             {% if not user.is_authenticated %}
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="{% url "users:login" %}">Войти</a>
                             </li>
                             {% else %}
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown me-sm-2">
                                 <a class="nav-link dropdown-toggle text-white" href="#" role="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Мой профиль
@@ -93,8 +93,8 @@
                                     <li><a class="dropdown-item  text-white" href="{% url "users:logout" %}">Выйти</a></li>
                                 </ul>
                             </li>
-                            <li>
-                                <a class="nav-item align-content-center" href="{% url "users:profile" %}">
+                            <li class="my-auto">
+                                <a class="nav-item" href="{% url "users:profile" %}">
                                     {% if user.image %}
                                         <img src="{{ user.image.url }}"
                                             alt="Аватар пользователя" class="img-fluid rounded-circle"
@@ -105,7 +105,9 @@
                                             style="max-width: 36px">
                                     {% endif %}
                                 </a>
-
+                            </li>
+                            <li>
+                                {% block modal_cart %}{% endblock modal_cart %}
                             </li>
                             {% endif %}
                     </ul>

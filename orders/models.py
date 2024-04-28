@@ -8,11 +8,11 @@ from users.models import User
 class OrderitemQueryset(models.QuerySet):
 
     def total_price(self):
-        return sum(cart.products_price() for cart in self)
+        return sum(item.products_price() for item in self)
 
     def total_quantity(self):
         if self:
-            return sum(cart.quantity for cart in self)
+            return sum(item.quantity for item in self)
         return 0
 
 class OrderStatus(models.Model):

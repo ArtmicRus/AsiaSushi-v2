@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block modal_cart %}
+    {% include "includes/cart_button.html" %}
+{% endblock modal_cart %}
+
 {% block content %}
     {% comment %} <div class="page-title">
         <div class="large-wrapper">

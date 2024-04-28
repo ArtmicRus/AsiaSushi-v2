@@ -72,6 +72,7 @@ def create_order(request):
         initial = {
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
+            'phone_number': request.user.phone_number,
             }
 
         # initial = изначальные данные куда мы передаём предзаполненные данные
@@ -90,3 +91,8 @@ def create_order(request):
 def delete_order(request, order_id):
     Order.objects.get(id=order_id).delete()
     return redirect(request.META['HTTP_REFERER'])
+
+
+# @login_required 
+# def order_total_price(request, order_id)
+#     items = OrderItem.filter
