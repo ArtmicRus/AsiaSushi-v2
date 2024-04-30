@@ -1,0 +1,55 @@
+{% load static %}
+
+<!-- Кнопка, открывающая модальное окно -->
+<div class="d-flex justify-content-end">
+    <button type="button" class="btn btn-primary rounded" data-bs-toggle="modal" data-bs-target="#answerFormModal{{review.id}}">
+        Ответить на отзыв
+    </button>
+</div>
+
+<!-- Модальное окно -->
+  <div class="modal fade" id="answerFormModal{{review.id}}" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" aria-bs-labelledby="answerModalLabel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="answerModalLabel">Форма ответа пользователю</h5>
+          <!-- Кнопка закрытия -->
+          <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="answerForm" action="{% url "feedback:create_answer" review_id=review.pk %}" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="col-sm-12 mx-auto mb-2">
+                <!-- Имя пользователя -->
+                <div class="form-group">
+                  <label for="name" class="control-label">Имя пользователя</label>
+                  <input type="text" name="name" class="form-control" id="name"
+                  value="{% if review.user.first_name %}{{review.user.first_name}}{% endif %}" placeholder="Имя" 
+                  readonly disabled>
+                </div>
+              </div>
+            </div>
+            <!-- Сообщение пользователя -->
+            <div class="form-group my-3">
+              <label for="message" class="control-label">Отзыв пользователя</label>
+              <textarea  type="text" id="message" name="message" class="form-control" rows="4" placeholder="Сообщение (не менее 5 символов)" 
+              readonly disabled>{{ review.comment }}</textarea>
+            </div>
+            <div class="form-group my-3">
+                <label for="answer" class="control-label">Ответить пользователю</label>
+                <textarea  type="text" id="answer" name="answer" class="form-control" rows="4" placeholder="Сообщение (не менее 5 символов)" 
+                minlength="5" maxlength="200" required="required"></textarea>
+                {% if form.answer.errors %}
+                  <div class="alert alert-danger alert-dismissible fade show">{{form.answer.errors}}</div>
+                {% endif %}
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+          <button type="submit" class="btn btn-success">Ответить на отзыв отзыв</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
