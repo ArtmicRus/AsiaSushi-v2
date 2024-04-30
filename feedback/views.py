@@ -86,4 +86,10 @@ def create_answer(request, review_id):
             messages.success(request, form.errors)
     
     return redirect('feedback:reviews')
+
+@login_required
+def delete_review(request, review_id):
+    Feedback.objects.get(id=review_id).delete()
+    return redirect('feedback:reviews')
+
             
