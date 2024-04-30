@@ -50,7 +50,10 @@
                         <li>
                             <a class="nav-link text-white" href="#">Акции</a>
                         </li>
-                        <li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{% url "feedback:reviews" %}">Отзывы</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-white" href="{% url "main:about" %}">О нас</a>
                         </li>
                         {% comment %} <li class="nav-item dropdown ">
@@ -63,9 +66,9 @@
                                 <li><a class="dropdown-item  text-white" href="{% url "main:about" %}">Про нас</a></li>
                             </ul>
                         </li> {% endcomment %}
-                        <li class="nav-item">
+                        {% comment %} <li class="nav-item">
                             <a class="nav-link  text-white" href="{% url "user:users_cart" %}">Корзина</a>
-                        </li>
+                        </li> {% endcomment %}
                         {% if user.is_admin or user.is_staff %}
                             <li>
                                 <a class="nav-link text-white" href="{% url "admin:index" %}">Админ панель</a>
@@ -106,10 +109,11 @@
                                     {% endif %}
                                 </a>
                             </li>
+                            {% endif %}
                             <li>
                                 {% block modal_cart %}{% endblock modal_cart %}
                             </li>
-                            {% endif %}
+                            
                     </ul>
                 </div>
             </div>
@@ -155,6 +159,7 @@
     <script src="{% static "deps/js/jquery/jquery-3.7.0.min.js" %}"></script>
     <script src="{% static "deps/js/jquery-ajax.js" %}"></script>
     <script src="{% static "deps/js/bootstrap/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "deps/js/star-radio.js" %}"></script>
 </body>
 
 </html>

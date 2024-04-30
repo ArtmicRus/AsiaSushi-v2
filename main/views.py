@@ -7,7 +7,7 @@ from goods.models import Categories
 def index(request):
 
     context = {
-        'title': 'Азия суши - Главная',
+        'title': 'Asia - Главная страница',
         'content': 'Азия суши - Продажа суши и пиццы!',
         "year": datetime.now().year,
     }
@@ -16,17 +16,16 @@ def index(request):
 
 def about(request):
     context = {
-        'title': 'Азия суши - О нас',
+        'title': 'Asia - О нас',
         'content': 'О нас',
         "year": datetime.now().year,
-        'text_on_page': 'Тестовый текст о том почему у нас самые вкусные суши и пицца!!!',
     }
 
     return render(request, 'main/about.html', context)
 
 def contact(request):
     context = {
-        'title': 'Азия суши- Контактная информация',
+        'title': 'Asia - Контактная информация',
         'content': 'Контакты',
         "year": datetime.now().year,
     }

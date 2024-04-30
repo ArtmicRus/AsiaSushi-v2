@@ -40,7 +40,7 @@ def login(request):
         form = UserLoginForm()
     
     context={
-        'title':'AsiaSushi - Авторизация',
+        'title':'Asia - Авторизация',
         'form': form,
     }
     return render(request,'users/login.html',context)

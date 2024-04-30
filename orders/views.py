@@ -80,7 +80,7 @@ def create_order(request):
         form = CreateOrderForm(initial=initial)
 
     context = {
-        'title': 'AsiaSushi - Оформление заказа',
+        'title': 'Asia - Оформление заказа',
         'form': form,
         'order': True,
     }

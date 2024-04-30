@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "users",
     "carts",
     'orders',
+    'feedback',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +165,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 LOGIN_URL = "/user/login/"
+
+# Мои настройки (список оценок)
+SCORES = [
+        (1, "Ужасно"),
+        (2, "Плохо"),
+        (3, "Нормально"),
+        (4, "Хорошо"),
+        (5, "Замечательно"),
+    ]

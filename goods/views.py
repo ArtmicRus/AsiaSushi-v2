@@ -30,7 +30,7 @@ def catalog(request, category_slug=None):
     current_page = paginator.page(page)
     
     context = {
-        "title": "Азия суши - Каталог",
+        "title": "Asia - Каталог",
         "goods": current_page,
         "slug_url" : category_slug,
         "year": datetime.now().year,
