@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-1h1v9flu7#s@m^v(plqooqc8s%6mz_viw-)g6u!rt9@q8wjd&j"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -97,17 +97,17 @@ WSGI_APPLICATION = "app.wsgi.application"
 DATABASES = {
     "default": {
         # Настройки sqlite3
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
 
         # Настройки Postgres
 
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "DjangoPrikol",
-        "USER": "pythonist",
-        "PASSWORD": "pythonist",
-        "HOST": "localhost",
-        "PORT": "5433",
+        # "ENGINE": "django.db.backends.postgresql",
+        # "NAME": "DjangoPrikol",
+        # "USER": "pythonist",
+        # "PASSWORD": "pythonist",
+        # "HOST": "localhost",
+        # "PORT": "5433",
     }
 }
 
