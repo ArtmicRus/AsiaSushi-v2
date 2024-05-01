@@ -96,6 +96,12 @@ WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {
     "default": {
+        # Настройки sqlite3
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+
+        # Настройки Postgres
+
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "DjangoPrikol",
         "USER": "pythonist",
@@ -150,6 +156,7 @@ MEDIA_URL = "media/"
 
 MEDIA_ROOT = BASE_DIR / "media/"
 
+# Адреса где будет работать дебаг тулбар
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",

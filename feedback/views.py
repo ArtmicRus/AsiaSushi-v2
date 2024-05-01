@@ -6,12 +6,12 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from app.settings import SCORES
 from feedback.forms import CreateAnswerForm, CreateReviewForm
-from feedback.models import Feedback
+from feedback.models import Reviews
 
 # Create your views here.
 def reviews(request):
 
-    reviews = Feedback.objects.all()
+    reviews = Reviews.objects.all()
     # Если пользователь авторизован то берём данные для автозаполнения формы
     if request.user.is_authenticated:
         initial = {
@@ -49,7 +49,7 @@ def create_review(request):
         if form.is_valid():
             user = request.user
             try:
-                Feedback.objects.create(
+                Reviews.objects.create(
                         user=user,
                         title=form.cleaned_data['title'],
                         comment=form.cleaned_data['message'],
@@ -74,7 +74,7 @@ def create_answer(request, review_id):
         form = CreateAnswerForm(data=request.POST)
         if form.is_valid():
             try:
-                review = Feedback.objects.get(pk = review_id)
+                review = Reviews.objects.get(pk = review_id)
                 review.answer = form.cleaned_data['answer']
 
                 review.save()
@@ -89,7 +89,7 @@ def create_answer(request, review_id):
 
 @login_required
 def delete_review(request, review_id):
-    Feedback.objects.get(id=review_id).delete()
+    Reviews.objects.get(id=review_id).delete()
     return redirect('feedback:reviews')
 
             

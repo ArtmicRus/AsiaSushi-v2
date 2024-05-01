@@ -15,3 +15,10 @@ class CreateReviewForm(forms.Form):
 class CreateAnswerForm(forms.Form):
     answer = forms.CharField()
 
+
+class CreateFeedbackForm(forms.Form):
+    email = forms.CharField(required=False)
+    title = forms.CharField()
+    message = forms.CharField()
+    score = forms.ChoiceField(choices=SCORES)
+

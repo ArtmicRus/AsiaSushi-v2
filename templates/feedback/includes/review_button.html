@@ -26,7 +26,7 @@
                 <div class="form-group">
                   <label for="name" class="control-label">Имя </label>
                   <input type="text" name="name" class="form-control" id="name"
-                  value="{% if form.name.value %}{{form.name.value}}{% endif %}" placeholder="Имя" 
+                  value="{{user.first_name}}" placeholder="Имя" 
                   readonly disabled>
                   {% if form.first_name.errors %}
                     <div class="alert alert-danger alert-dismissible fade show">{{form.first_name.errors}}</div>
@@ -38,7 +38,7 @@
                 <div class="form-group">
                   <label for="email" class="control-label">Эл.Почта</label>
                   <input type="email" name="email" id="email" readonly disabled
-                  class="form-control" value="{% if form.email.value %}{{form.email.value}}{% endif %}" placeholder="Email">
+                  class="form-control" value="{{user.email}}" placeholder="Email">
                   {% if form.email.errors %}
                     <div class="alert alert-danger alert-dismissible fade show">{{form.email.errors}}</div>
                   {% endif %}
@@ -50,7 +50,7 @@
               <label for="phone_number" class="control-label">Ваш номер телефона</label>
               <input type="phone_number" name="phone_number" required="required" id="phone_number" 
               readonly disabled
-              class="form-control" value="{% if form.phone_number.value %}{{form.phone_number.value}}{% endif %}" placeholder="Номер телефона">
+              class="form-control" value="{{user.phone_number}}" placeholder="Номер телефона">
               {% if form.phone_number.errors %}
                 <div class="alert alert-danger alert-dismissible fade show">{{form.phone_number.errors}}</div>
               {% endif %}

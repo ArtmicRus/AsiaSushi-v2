@@ -50,7 +50,7 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = (
             "first_name",
-            "last_name",
+            "phone_number",
             "username",
             "email",
             "password1",
@@ -58,7 +58,7 @@ class UserRegistrationForm(UserCreationForm):
         )
     
     first_name = forms.CharField()
-    last_name = forms.CharField()
+    phone_number = forms.CharField(max_length=14)
     username = forms.CharField()
     email = forms.CharField()
     password1 = forms.CharField()

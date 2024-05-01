@@ -5,7 +5,7 @@ from app.settings import SCORES
 from users.models import User
 
 # Create your models here.
-class Feedback(models.Model):
+class Reviews(models.Model):
 
     user = models.ForeignKey(to=User, on_delete=models.SET_DEFAULT, blank=True, null=False, verbose_name="Пользователь", default=None)
     title = models.CharField(max_length=25, blank=False, null=True, verbose_name='Заголовок отзыва')
@@ -16,7 +16,7 @@ class Feedback(models.Model):
 
     class Meta: 
         # Название таблицы в БД
-        db_table = 'feedback'
+        db_table = 'Reviews'
         # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
