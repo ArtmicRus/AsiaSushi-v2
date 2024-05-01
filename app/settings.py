@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-1h1v9flu7#s@m^v(plqooqc8s%6mz_viw-)g6u!rt9@q8wjd&j"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.postgres",
+    # "django.contrib.postgres",
     # Дебаг тулбар для джанго
     "debug_toolbar",
     # Мои проекты
