@@ -31,9 +31,9 @@ urlpatterns = [
     path('feedback/', include('feedback.urls', namespace='feedback')),
 ]
 
-if settings.DEBUG:
-    urlpatterns += [
-        # Дебаг тулбар для джанго
-        path("__debug__/", include("debug_toolbar.urls")),
-    ]
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += [
+#         # Дебаг тулбар для джанго
+#         path("__debug__/", include("debug_toolbar.urls")),
+#     ]
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
