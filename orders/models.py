@@ -57,7 +57,7 @@ class OrderItem(models.Model):
 
 
     class Meta:
-        db_table = "order_item"
+        db_table = "Order_items"
         verbose_name = "Проданный товар"
         verbose_name_plural = "Проданные товары"
 

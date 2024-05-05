@@ -71,7 +71,6 @@ def create_order(request):
     else:
         initial = {
             'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
             'phone_number': request.user.phone_number,
             }
 

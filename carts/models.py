@@ -25,7 +25,7 @@ class Cart(models.Model):
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
 
     class Meta:
-        db_table = 'cart'
+        db_table = 'Carts'
         verbose_name = "Корзина"
         verbose_name_plural = "Корзина"
 

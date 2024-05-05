@@ -69,8 +69,8 @@
     {% endif %}
     {% for product in goods %}
         <!-- Карта товара -->
-        <div class="col-lg-3 col-md-4 p-4">
-            <div class="card border-primary rounded custom-shadow">
+        <div class="col-lg-3 col-md-4 p-4 d-flex align-items-stretch justify-content-bottom">
+            <div class="card border-secondary rounded custom-shadow">
                 {% if product.image %}
                     <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                 {% else %}
@@ -83,29 +83,30 @@
                     <div class="text-center">
                         <h5 class="card-title">{{product.name}}</h5>
                     </div>
-                    <p class="card-text">{{ product.description|truncatechars:50 }}</p>
-                    <a href="#" class="btn btn-warning mb-3 d-flex justify-content-center">Подробнее</a>
+                    <p class="card-text text-center my-3">{{ product.description|truncatechars:100 }}</p>
+                    {% comment %} <a href="#" class="btn btn-warning mb-3 d-flex justify-content-center">Подробнее</a> {% endcomment %}
                     {% comment %} Id не нужен <p class="product_id">id: {{ product.display_id }}</p> {% endcomment %} 
-                    <div class="card-footer d-flex flex-row align-items-center justify-content-between">
-                        <div class="flex-column">
-                            {% if product.discount %}
-                                <p><s>{{ product.price }}</s> Руб.</p>
-                                <p><strong>{{ product.self_price }} Руб.</strong></p>
-                                <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
-                            {% else  %}
-                                <p><strong>{{ product.price }} Руб.</strong></p> 
-                            {% endif %}
-                        </div>
-
-                        {% comment %} Тут add-to-cart это класс ссылка на jquary запрос
-                        Сам метод находится в файле static/js/jquary-ajax.js {% endcomment %}
-                            <a href="{% url "cart:cart_add" %}" class="align-items-center btn add-to-cart"
-                            data-product-id="{{ product.id }}">
-                                {% csrf_token %}
-                                <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
-                                    width="28" height="28">
-                            </a>
+                        <div class="card-footer d-flex flex-row align-items-center justify-content-between">
+                            <div class="flex-column">
+                                {% if product.discount %}
+                                    <p><s>{{ product.price }}</s> Руб.</p>
+                                    <p><strong>{{ product.self_price }} Руб.</strong></p>
+                                    <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
+                                {% else  %}
+                                    <p><strong>{{ product.price }} Руб.</strong></p> 
+                                {% endif %}
+                            </div>
+    
+                            {% comment %} Тут add-to-cart это класс ссылка на jquary запрос
+                            Сам метод находится в файле static/js/jquary-ajax.js {% endcomment %}
+                                <a href="{% url "cart:cart_add" %}" class="align-items-center btn add-to-cart"
+                                data-product-id="{{ product.id }}">
+                                    {% csrf_token %}
+                                    <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
+                                        width="28" height="28">
+                                </a>
                     </div>
+                    
                 </div>
             </div>
         </div>

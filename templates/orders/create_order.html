@@ -3,7 +3,7 @@
 {% load carts_tags %}
 
 {% block content %}
-<div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow">
+<div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow col-8 mx-auto">
     <div class="container">
         <h3 class="text-center mb-4">Выбранные товары</h3>
         <div class="container" id="cart-items-container">
@@ -31,15 +31,6 @@
                                 {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="id_last_name" class="form-label">Фамилия*:</label>
-                            <input type="text" class="form-control" id="id_last_name" name="last_name" 
-                            value="{% if form.last_name.value %}{{form.last_name.value}}{% endif %}"
-                            required>
-                            {% if form.last_name.errors %}
-                                <div class="alert alert-danger alert-dismissible fade show">{{form.last_name.errors}}</div>
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
                             <label for="id_phone_number" class="form-label">Номер телефона*:</label>
                             <input type="text" class="form-control" id="id_phone_number" name="phone_number"
                                 value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}"  
@@ -51,16 +42,16 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="delivery" class="form-label">Способ доставки: </label>
-                            <div class="form-check form-check-inline">
+                            <div class="form-check form-check-inline mx-2">
                                 <input class="form-check-input" type="radio" name="requires_delivery"
-                                    id="id_requires_delivery" value="1" checked>
-                                <label class="form-check-label" for="id_requires_delivery">Нужна
+                                    id="id_requires_delivery_1" value="1" checked>
+                                <label class="form-check-label" for="id_requires_delivery_1">Нужна
                                     доставка</label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="requires_delivery"
-                                    id="id_requires_delivery" value="0">
-                                <label class="form-check-label" for="id_requires_delivery">Самовывоз</label>
+                                    id="id_requires_delivery_0" value="0">
+                                <label class="form-check-label" for="id_requires_delivery_0">Самовывоз</label>
                             </div>
                         </div>
                         <div class="mb-3" id="deliveryAddressField">
@@ -75,21 +66,21 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Способ оплаты: </label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="payment_on_get"
-                                    id="id_payment_on_get" value="0" checked>
-                                <label class="form-check-label" for="id_payment_on_get">Оплата
-                                    картой</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="payment_on_get"
-                                    id="id_payment_on_get" value="1">
-                                <label class="form-check-label" for="id_payment_on_get">Наличными/картой
-                                    при плучении</label>
-                                    {% if form.payment_on_get.errors %}
-                                        <div class="alert alert-danger alert-dismissible fade show">{{form.payment_on_get.errors}}</div>
-                                    {% endif %}
-                            </div>
+                                <div class="form-check form-check-inline mx-2">
+                                    <input class="form-check-input" type="radio" name="payment_on_get"
+                                        id="id_payment_on_get_0" value="0" checked>
+                                    <label class="form-check-label" for="id_payment_on_get_0">Оплата
+                                        картой</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="payment_on_get"
+                                        id="id_payment_on_get_1" value="1">
+                                    <label class="form-check-label" for="id_payment_on_get_1">Наличными/картой
+                                        при плучении</label>
+                                        {% if form.payment_on_get.errors %}
+                                            <div class="alert alert-danger alert-dismissible fade show">{{form.payment_on_get.errors}}</div>
+                                        {% endif %}
+                                </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-dark">Оформить заказ</button>

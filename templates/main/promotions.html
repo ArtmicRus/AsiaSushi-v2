@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block modal_cart %}
+    {% include "includes/cart_button.html" %}
+{% endblock modal_cart %}
+
+
+{% block content %}
+
+{% if promotions %}
+{% for promotion in promotions %}
+
+<div class="card mb-3 mx-auto">
+    <div class="row g-0">
+        <div class="col-md-3">
+            <img src="{{promotion.image.url}}" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-7">
+            <div class="card-body">
+                <h5 class="card-title d-flex align-items-center justify-content-center">{{promotion.name}}</h5>
+                <p class="card-text">{{promotion.description}}</p>
+            </div>
+            <p class="card-text text-danger d-flex align-bottom justify-content-center">
+                Можно использовать не более 1 акции за покупку
+            </p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endblock content %}
+
+
+
+{% block footer %}
+    {% include "includes/footer.html" %}
+{% endblock footer %}

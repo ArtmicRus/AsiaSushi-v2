@@ -8,7 +8,7 @@ class Categories(models.Model):
 
     class Meta: 
         # Название таблицы в БД
-        db_table = 'category'
+        db_table = 'Categories'
         # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
         verbose_name = 'Категорию'
         verbose_name_plural = 'Категории'
@@ -33,21 +33,6 @@ class Categories(models.Model):
     #     verbose_name = 'Условия акции'
     #     verbose_name_plural = 'Условия акции'
 
-class Promotions(models.Model):
-
-    name = models.CharField(max_length=150, verbose_name='Название')
-    description = models.TextField(blank=True, null=True, verbose_name='Описание')
-    image = models.ImageField(upload_to='promotions_images', blank=True, null=True, verbose_name='Изображение')
-    # promo = models.CharField(max_length=10, verbose_name='Промокод для добавления акции к карзине')
-    # promotion_terms = models.ForeignKey(to=PromotionTerms, on_delete=models.CASCADE,verbose_name='Условия акции')
-
-    class Meta: 
-        # Название таблицы в БД
-        db_table = 'promotion'
-        # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
-        verbose_name = 'Акция'
-        verbose_name_plural = 'Акции'
-
 class Products(models.Model):
 
     # verbose_name отображает в админке при создании объекта
@@ -61,7 +46,7 @@ class Products(models.Model):
 
     class Meta: 
         # Название таблицы в БД
-        db_table = 'product'
+        db_table = 'Products'
         # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'

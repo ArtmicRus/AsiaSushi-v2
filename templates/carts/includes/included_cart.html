@@ -9,19 +9,19 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
                 <div class="row text-center d-flex justify-content-center align-items-center">
-                    <div class="col p-0">
-                        <div class="input-group">
-                            <span class="input-group-btn ">
-                                <button type="button" class="btn btn-dark btn-sm decrement"
+                    <div class="col-4 col-sm-4 p-0">
+                        <div class="input-group ">
+                            <span class="input-group-btn my-auto">
+                                <button type="button" class="btn btn-dark decrement rounded-0 rounded-start"
                                     data-cart-id="{{cart.id}}" 
                                     data-cart-change-url="{% url "cart:cart_change" %}">
                                     {% csrf_token %}
                                     -</button>
                             </span>
                             <input type="text" class="form-control number" value="{{ cart.quantity }}"
-                                readonly>
-                            <span class="input-group-btn">
-                                <button type="button" class="btn btn-dark btn-sm align-content-center increment"
+                            readonly disabled >
+                            <span class="input-group-btn my-auto">
+                                <button type="button" class="btn btn-dark align-content-center increment rounded-0 rounded-end"
                                     data-cart-id="{{cart.id}}" 
                                     data-cart-change-url="{% url "cart:cart_change" %}">
                                     {% csrf_token %}
@@ -29,18 +29,15 @@
                             </span>
                         </div>
                     </div>
-                    <div class="col p-0">
-                        <p> x {{ cart.product.self_price }} Руб. = </p>
+                    <div class="col-7 p-0">
+                        <p> x {{ cart.product.self_price }} ₽ = <strong>{{ cart.products_price }} ₽</strong></p>
                     </div>
-                    <div class="col p-0">
-                        <strong>{{ cart.products_price }} Руб.</strong>
-                    </div>
-                    <div class="col p-0">
+                    <div class="col-1 p-0">
                         <a href="{% url "cart:cart_remove" %}" class="remove-from-cart" 
                         data-cart-id="{{ cart.id }}">
                             {% csrf_token %}
-                            <img class="" src="{% static "deps/icons/trash3-fill.svg" %}"
-                                alt="Catalog Icon" width="16" height="16">
+                            <img class="btn" src="{% static "deps/icons/trash3-fill.svg" %}"
+                                alt="Catalog Icon">
                         </a>
                     </div>
                 </div>
@@ -56,6 +53,6 @@
 </div>
 {% if carts and not order %}
     <a class="btn btn-dark" href="{% url "orders:create_order" %}">
-        Оформить заказ
+        Перейти к оформлению заказа
     </a>
 {% endif %}
