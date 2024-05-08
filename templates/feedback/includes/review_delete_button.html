@@ -9,18 +9,18 @@
 <!-- Модальное окно -->
 <div class="modal fade" id="deleteReviewModal{{review.id}}" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" aria-bs-labelledby="answerModalLabel">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="answerModalLabel">Форма подтверждения</h5>
-            <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            Вы точно уверены что хотите удалить отзыв?
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-            <a class="btn btn-danger" href="{% url "feedback:delete_review" review_id=review.pk %}">Удалить отзыв</a>
-        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="answerModalLabel">Форма подтверждения</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Вы точно уверены что хотите удалить отзыв?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <a class="btn btn-danger" href="{% url "feedback:delete_review" review_id=review.pk %}">Удалить отзыв</a>
+            </div>
         </div>
     </div>
 </div>

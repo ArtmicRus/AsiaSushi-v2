@@ -9,94 +9,94 @@
 
 <!-- Модальное окно -->
 
-  <div class="modal fade" id="feedbackFormModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" aria-bs-labelledby="feedbackModalLabel">
+<div class="modal fade" id="feedbackFormModal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true" aria-bs-labelledby="feedbackModalLabel">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="feedbackModalLabel">Форма обратной связи</h5>
-          <!-- Кнопка закрытия -->
-          <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="feedbackModalLabel">Форма обратной связи</h5>
+                <!-- Кнопка закрытия -->
+                <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="feedbackForm" action="{% url "feedback:create_review" %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-sm-12 mx-auto mb-2">
+                            <!-- Имя пользователя -->
+                            <div class="form-group">
+                                <label for="name" class="control-label">Имя </label>
+                                <input type="text" name="name" class="form-control" id="name"
+                                       value="{{user.first_name}}" placeholder="Имя"
+                                       readonly disabled>
+                                {% if form.first_name.errors %}
+                                <div class="alert alert-danger alert-dismissible fade show">{{form.first_name.errors}}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Email пользователя -->
+                        <div class="col-sm-12 mx-auto m-2">
+                            <div class="form-group">
+                                <label for="email" class="control-label">Эл.Почта</label>
+                                <input type="email" name="email" id="email" readonly disabled
+                                       class="form-control" value="{{user.email}}" placeholder="Email">
+                                {% if form.email.errors %}
+                                <div class="alert alert-danger alert-dismissible fade show">{{form.email.errors}}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Номер телефона -->
+                    <div class="form-group">
+                        <label for="phone_number" class="control-label">Ваш номер телефона</label>
+                        <input type="phone_number" name="phone_number" required="required" id="phone_number"
+                               readonly disabled
+                               class="form-control" value="{{user.phone_number}}" placeholder="Номер телефона">
+                        {% if form.phone_number.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show">{{form.phone_number.errors}}</div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="title" class="control-label">Заголовок отзыва</label>
+                        <input type="text" name="title" class="form-control" id="title"
+                               minlength="3" maxlength="25"
+                               placeholder="Заголовок">
+                        {% if form.title.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show">{{form.title.errors}}</div>
+                        {% endif %}
+                    </div>
+                    <!-- Сообщение пользователя -->
+                    <div class="form-group my-3">
+                        <label for="message" class="control-label">Ваш отзыв</label>
+                        <textarea type="text" id="message" name="message" class="form-control" rows="4" placeholder="Сообщение (не менее 10 символов)"
+                                  minlength="10" maxlength="250" required="required"></textarea>
+                        {% if form.message.errors %}
+                        <div class="alert alert-danger alert-dismissible fade show">{{form.message.errors}}</div>
+                        {% endif %}
+                    </div>
+                    <!-- Итоговая оценка -->
+                    <div class="form-group">
+                        <div class="my-3">
+                            Ваша итоговая оценка нам и нашей продукции?
+                        </div>
+                        <div class="d-flex align-content-center justify-content-center row">
+                            {% for Score in scores %}
+                            <div class="form-check">
+                                <input class="form-check-input mx-2" type="radio" id="{{Score.0}}" name="score"
+                                       value="{{Score.0}}" checked/>
+                                <label for="{{Score.0}}">{{Score.1}}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-success">Опубликовать отзыв</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-          <form id="feedbackForm" action="{% url "feedback:create_review" %}" method="post">
-            {% csrf_token %}
-            <div class="form-row">
-              <div class="col-sm-12 mx-auto mb-2">
-                <!-- Имя пользователя -->
-                <div class="form-group">
-                  <label for="name" class="control-label">Имя </label>
-                  <input type="text" name="name" class="form-control" id="name"
-                  value="{{user.first_name}}" placeholder="Имя" 
-                  readonly disabled>
-                  {% if form.first_name.errors %}
-                    <div class="alert alert-danger alert-dismissible fade show">{{form.first_name.errors}}</div>
-                  {% endif %}
-                </div>
-              </div>
-              <!-- Email пользователя -->
-              <div class="col-sm-12 mx-auto m-2">
-                <div class="form-group">
-                  <label for="email" class="control-label">Эл.Почта</label>
-                  <input type="email" name="email" id="email" readonly disabled
-                  class="form-control" value="{{user.email}}" placeholder="Email">
-                  {% if form.email.errors %}
-                    <div class="alert alert-danger alert-dismissible fade show">{{form.email.errors}}</div>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-            <!-- Номер телефона -->
-            <div class="form-group">
-              <label for="phone_number" class="control-label">Ваш номер телефона</label>
-              <input type="phone_number" name="phone_number" required="required" id="phone_number" 
-              readonly disabled
-              class="form-control" value="{{user.phone_number}}" placeholder="Номер телефона">
-              {% if form.phone_number.errors %}
-                <div class="alert alert-danger alert-dismissible fade show">{{form.phone_number.errors}}</div>
-              {% endif %}
-            </div>
-            <div class="form-group mt-3">
-              <label for="title" class="control-label">Заголовок отзыва</label>
-              <input type="text" name="title" class="form-control" id="title"
-              minlength="3" maxlength="25"
-              placeholder="Заголовок">
-              {% if form.title.errors %}
-                <div class="alert alert-danger alert-dismissible fade show">{{form.title.errors}}</div>
-              {% endif %}
-            </div>
-            <!-- Сообщение пользователя -->
-            <div class="form-group my-3">
-              <label for="message" class="control-label">Ваш отзыв</label>
-              <textarea  type="text" id="message" name="message" class="form-control" rows="4" placeholder="Сообщение (не менее 10 символов)" 
-              minlength="10" maxlength="250" required="required"></textarea>
-              {% if form.message.errors %}
-                <div class="alert alert-danger alert-dismissible fade show">{{form.message.errors}}</div>
-              {% endif %}
-            </div>
-            <!-- Итоговая оценка -->
-            <div class="form-group">
-              <div class="my-3">
-                Ваша итоговая оценка нам и нашей продукции?
-              </div>
-              <fieldset class="d-flex align-content-center justify-content-center row">
-                {% for Score in scores %}
-                <div class="form-check">
-                  <input class="form-check-input mx-2" type="radio" id="{{Score.0}}" name="score" 
-                  value="{{Score.0}}" checked/>
-                  <label for="{{Score.0}}">{{Score.1}}</label>
-                </div>
-                {% endfor %}
-              </fieldset>
-            </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-          <button type="submit" class="btn btn-success">Опубликовать отзыв</button>
-        </div>
-      </form>
-      </div>
     </div>
-  </div>
+</div>
 
 
 {% comment %} <!-- Форма обратной связи в модальном окне -->

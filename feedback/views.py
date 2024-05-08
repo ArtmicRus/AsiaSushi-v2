@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 
 from django.contrib.auth.decorators import login_required
 from app.settings import SCORES
-from feedback.forms import CreateAnswerForm, CreateReviewForm
+from feedback.forms import ChangeReviewForm, CreateAnswerForm, CreateReviewForm
 from feedback.models import Reviews
 
 # Create your views here.
@@ -88,8 +88,32 @@ def create_answer(request, review_id):
     return redirect('feedback:reviews')
 
 @login_required
+def change_review(request, review_id):
+
+    if request.method == 'POST':
+        form = ChangeReviewForm(data=request.POST)
+        if form.is_valid():
+            try:
+                review = Reviews.objects.get(id=review_id)
+
+                review.title = form.cleaned_data['title']
+                review.comment = form.cleaned_data['message']
+                review.score = form.cleaned_data['score_changes']
+
+                review.save()
+                
+                messages.success(request, 'Ваш отзыв успешно изменён!')
+            
+            except ValidationError as e:
+                messages.success(request, str(e))
+        else:
+            messages.success(request, form.errors)
+    
+
+    return redirect('feedback:reviews')
+
+@login_required
 def delete_review(request, review_id):
     Reviews.objects.get(id=review_id).delete()
     return redirect('feedback:reviews')
 
-            

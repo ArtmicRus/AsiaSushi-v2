@@ -11,6 +11,11 @@ class CreateReviewForm(forms.Form):
     message = forms.CharField()
     score = forms.ChoiceField(choices=SCORES)
 
+class ChangeReviewForm(forms.Form):
+    title = forms.CharField()
+    message = forms.CharField()
+    score_changes = forms.ChoiceField(choices=SCORES)
+
 
 class CreateAnswerForm(forms.Form):
     answer = forms.CharField()
