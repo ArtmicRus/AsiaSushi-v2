@@ -2,7 +2,7 @@ from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from main.models import Promotions
+from promotions.models import Promotion
 
 
 def index(request):
@@ -32,15 +32,3 @@ def contact(request):
     }
 
     return render(request, 'main/contact.html', context)
-
-def promotions(request):
-
-    promo = Promotions.objects.all()
-
-    context = {
-        'promotions': promo,
-        'title': 'Asia - Акции',
-        "year": datetime.now().year,
-    }
-
-    return render(request, 'main/promotions.html', context)

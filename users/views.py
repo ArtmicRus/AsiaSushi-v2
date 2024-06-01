@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 
-from carts.models import Cart
+from carts.models import CartItem
 from orders.models import Order, OrderItem
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm
 
@@ -29,7 +29,7 @@ def login(request):
 
                 # Перезапись ключа сессии на авторизовавшегося пользователя
                 if session_key:
-                    Cart.objects.filter(session_key=session_key).update(user=user)
+                    CartItem.objects.filter(session_key=session_key).update(user=user)
 
                 redirect_page = request.POST.get('next', None)
                 if redirect_page and redirect_page != reverse('user:logout'):
@@ -60,7 +60,7 @@ def registration(request):
 
             # Перезапись ключа сессии на авторизовавшегося пользователя
             if session_key:
-                Cart.objects.filter(session_key=session_key).update(user=user)
+                CartItem.objects.filter(session_key=session_key).update(user=user)
 
             messages.success(request, f"{user.username}, Вы успешно зарегистрированы и вошли в аккаунт")
             return HttpResponseRedirect(reverse('main:index'))

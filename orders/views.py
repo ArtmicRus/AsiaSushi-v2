@@ -4,7 +4,7 @@ from django.db import transaction
 from django.forms import ValidationError
 from django.shortcuts import redirect, render
 
-from carts.models import Cart
+from carts.models import Cart, CartItem
 from orders.forms import CreateOrderForm
 from orders.models import Order, OrderItem, OrderStatus
 from orders.utils import create_statuses
@@ -19,7 +19,7 @@ def create_order(request):
                 # То есть всё что ниже должно быть сделано или откат всего
                 with transaction.atomic():
                     user = request.user
-                    cart_items = Cart.objects.filter(user=user)
+                    cart_items = CartItem.objects.filter(user=user)
 
                     if cart_items.exists():
                         # Проверяем есть ли стутусы

@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from carts.models import Cart
+from carts.models import CartItem
 from carts.utils import get_user_carts
 from goods.models import Products
 
@@ -13,7 +13,7 @@ def cart_add(request):
     product = Products.objects.get(id=product_id)
 
     if request.user.is_authenticated:
-        carts = Cart.objects.filter(user=request.user, product=product)
+        carts = CartItem.objects.filter(user=request.user, product=product)
 
         if carts.exists():
             cart = carts.first()
@@ -21,9 +21,9 @@ def cart_add(request):
                 cart.quantity += 1
                 cart.save()
         else:
-            Cart.objects.create(user=request.user, product=product, quantity=1)
+            CartItem.objects.create(user=request.user, product=product, quantity=1)
     else:
-        carts = Cart.objects.filter(
+        carts = CartItem.objects.filter(
             session_key=request.session.session_key, 
             product=product
             )
@@ -35,7 +35,7 @@ def cart_add(request):
                 cart.quantity += 1
                 cart.save()
         else:
-            Cart.objects.create(
+            CartItem.objects.create(
                 session_key=request.session.session_key, 
                 product=product, 
                 quantity=1
@@ -63,7 +63,7 @@ def cart_change(request):
     cart_id = request.POST.get("cart_id")
     quantity = request.POST.get("quantity")
 
-    cart = Cart.objects.get(id=cart_id)
+    cart = CartItem.objects.get(id=cart_id)
 
     cart.quantity = quantity
     cart.save()
@@ -86,7 +86,7 @@ def cart_remove(request):
     
     cart_id = request.POST.get("cart_id")
 
-    cart = Cart.objects.get(id=cart_id)
+    cart = CartItem.objects.get(id=cart_id)
     quantity = cart.quantity
     cart.delete()
 

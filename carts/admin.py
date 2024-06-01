@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from carts.models import Cart
+from carts.models import CartItem
 
 # admin.site.register(Cart)
 
@@ -9,7 +9,7 @@ from carts.models import Cart
 class CartTabAdmin(admin.TabularInline):
     
     # Модель карзины
-    model = Cart
+    model = CartItem
 
     # Поля для отображения
     fields = [
@@ -30,7 +30,7 @@ class CartTabAdmin(admin.TabularInline):
     # Одно доп поле если необходимо добавить что то
     extra = 1
 
-@admin.register(Cart)
+@admin.register(CartItem)
 class CartAdmin(admin.ModelAdmin):
     # Вывод полей модели в админке
     list_display = [

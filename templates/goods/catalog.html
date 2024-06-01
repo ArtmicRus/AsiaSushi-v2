@@ -83,30 +83,29 @@
                     <div class="text-center">
                         <h5 class="card-title">{{product.name}}</h5>
                     </div>
-                    <p class="card-text text-center my-3">{{ product.description|truncatechars:100 }}</p>
+                    <p class="card-text text-center my-1">{{ product.description|truncatechars:100 }}</p>
                     {% comment %} <a href="#" class="btn btn-warning mb-3 d-flex justify-content-center">Подробнее</a> {% endcomment %}
                     {% comment %} Id не нужен <p class="product_id">id: {{ product.display_id }}</p> {% endcomment %} 
-                        <div class="card-footer d-flex flex-row align-items-center justify-content-between">
-                            <div class="flex-column">
-                                {% if product.discount %}
-                                    <p><s>{{ product.price }}</s> Руб.</p>
-                                    <p><strong>{{ product.self_price }} Руб.</strong></p>
-                                    <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
-                                {% else  %}
-                                    <p><strong>{{ product.price }} Руб.</strong></p> 
-                                {% endif %}
-                            </div>
-    
-                            {% comment %} Тут add-to-cart это класс ссылка на jquary запрос
-                            Сам метод находится в файле static/js/jquary-ajax.js {% endcomment %}
-                                <a href="{% url "cart:cart_add" %}" class="align-items-center btn add-to-cart"
-                                data-product-id="{{ product.id }}">
-                                    {% csrf_token %}
-                                    <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
-                                        width="28" height="28">
-                                </a>
+                </div>
+                <div class="card-footer d-flex flex-row align-items-center justify-content-between">
+                    <div class="flex-column">
+                        {% if product.discount %}
+                            <p><s>{{ product.price }}</s> Руб.</p>
+                            <p><strong>{{ product.self_price }} Руб.</strong></p>
+                            <span class="badge bg-warning text-dark">Скидка {{ product.discount }} %</span>
+                        {% else  %}
+                            <p><strong>{{ product.price }} Руб.</strong></p> 
+                        {% endif %}
                     </div>
-                    
+
+                    {% comment %} Тут add-to-cart это класс ссылка на jquary запрос
+                    Сам метод находится в файле static/js/jquary-ajax.js {% endcomment %}
+                        <a href="{% url "cart:cart_add" %}" class="align-items-center btn add-to-cart"
+                        data-product-id="{{ product.id }}">
+                            {% csrf_token %}
+                            <img class="mx-1" src="{% static "deps/icons/cart-plus.svg" %}" alt="Catalog Icon"
+                                width="28" height="28">
+                        </a>
                 </div>
             </div>
         </div>
@@ -124,7 +123,10 @@
                 <a class="page-link" href="{% if goods.has_previous %}?{% change_params page=goods.previous_page_number %}
                 {% else %}
                 #
-                {% endif %}">Назад</a>
+                {% endif %}">
+                <img class="mx-1" src="{% static "deps/icons/arrow-left.svg" %}" alt="Catalog Icon" width="20"
+                height="20">
+                </a>
                 </li>
 
                 {% for page in goods.paginator.page_range %}
@@ -139,7 +141,10 @@
                     <a class="page-link" href="{% if goods.has_next %}?{% change_params page=goods.next_page_number %}
                     {% else %}
                     #
-                    {% endif %}">Следующая</a>
+                    {% endif %}">
+                    <img class="mx-1" src="{% static "deps/icons/arrow-right.svg" %}" alt="Catalog Icon" width="20"
+                    height="20">
+                    </a>
                 </li>
 
 
