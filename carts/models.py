@@ -4,21 +4,33 @@ from goods.models import Products
 from promotions.models import Promotion
 from users.models import User
 
-
+# Принимает Кверисет - то есть несколько или один объект в его обётке
+# По сути это как список
 class CartItemQueryset(models.QuerySet):
     
     def total_price(self):
-        return sum(cart.products_price() for cart in self)
+        return sum(cart_item.products_price() for cart_item in self)
     
     def total_quantity(self):
         if self:
-            return sum(cart.quantity for cart in self)
+            return sum(cart_item.quantity for cart_item in self)
         return 0
     
+# Корзина пользователя
+class Cart(models.Model):
+
+    promotion = models.ForeignKey(to=Promotion, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Акция')
+
+    class Meta:
+        db_table = 'Carts'
+        verbose_name = "Корзина"
+        verbose_name_plural = "Корзина"
+
 # Элементы корзины 
 class CartItem(models.Model):
 
     user = models.ForeignKey(to=User, on_delete=models.CASCADE,blank=True, null=True, verbose_name='Пользователь')
+    cart = models.ForeignKey(to=Cart, on_delete=models.CASCADE,blank=True, null=True, verbose_name='Корзина')
     product = models.ForeignKey(to=Products, on_delete=models.CASCADE,verbose_name='Товар')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
     # Ключ сессии для того чтобы можно было записать действия неавторизованного пользователя
@@ -35,19 +47,12 @@ class CartItem(models.Model):
     def products_price(self): # посчитать суммарную стоимость товара в карзине
         return round(self.product.self_price() * self.quantity, 2)
 
+    def get_cart(self):
+        return self.cart
+
     def __str__(self): # В каком виде выводить информацию
         if self.user:
             return f"Корзина {self.user.username} | Товар {self.product.name} | Количество {self.quantity}"
         
         return f"Анонимная корзина Товар {self.product.name} | Количество {self.quantity}"
     
-# Корзина пользователя
-class Cart(models.Model):
-
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE,blank=True, null=True, verbose_name='Пользователь')
-    promotion = models.ForeignKey(to=Promotion, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Акция')
-
-    class Meta:
-        db_table = 'Carts'
-        verbose_name = "Корзина"
-        verbose_name_plural = "Корзина"

@@ -31,10 +31,10 @@ class CartTabAdmin(admin.TabularInline):
     extra = 1
 
 @admin.register(CartItem)
-class CartAdmin(admin.ModelAdmin):
+class CartItemAdmin(admin.ModelAdmin):
     # Вывод полей модели в админке
     list_display = [
-        'user_display',
+        # 'user_display',
         'product_display',
         'quantity',
         'created_timestamp',
@@ -42,15 +42,15 @@ class CartAdmin(admin.ModelAdmin):
 
     list_filter = [
         "created_timestamp",
-        "user",
+        # "user",
         "product__name",
     ]
 
     # Для красивого отображения пользователя а не по его str методу
-    def user_display(self, obj):
-        if obj.user:
-            return str(obj.user)
-        return "Анонимный пользователь"
+    # def user_display(self, obj):
+    #     if obj.user:
+    #         return str(obj.user)
+    #     return "Анонимный пользователь"
 
     # Для красивого отображения продукта а не по его str методу
     def product_display(self, obj):

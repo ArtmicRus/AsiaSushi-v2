@@ -1,7 +1,9 @@
 // Когда html документ готов (прорисован)
 $(document).ready(function () {
     // берем в переменную элемент разметки с id jq-notification для оповещений от ajax
-    var successMessage = $("#jq-notification");
+    var successMessage = $("#jq-notification-success");
+
+    var dangerMessage = $("#jq-notification-danger");
 
     // Ловим собыитие клика по кнопке добавить в корзину
     $(document).on("click", ".add-to-cart", function (e) {
@@ -30,6 +32,7 @@ $(document).ready(function () {
                 // Сообщение
                 successMessage.html(data.message);
                 successMessage.fadeIn(400);
+                setTimeout(400);
                 // Через 7сек убираем сообщение
                 setTimeout(function () {
                     successMessage.fadeOut(400);
@@ -51,7 +54,112 @@ $(document).ready(function () {
         });
     });
 
+    // Ловим собыитие клика по кнопке добавить АКЦИЮ в корзину
+    $(document).on("click", ".add-promotion-to-cart", function (e) {
+        // Блокируем его базовое действие
+        e.preventDefault();
 
+        // // Берем элемент счетчика в значке корзины и берем оттуда значение
+        // var goodsInCartCount = $("#goods-in-cart-count");
+        // var cartCount = parseInt(goodsInCartCount.text() || 0);
+
+        // Получаем id акции из атрибута data-promotion-id
+        var promotion_id = $(this).data("promotion-id");
+
+        // Из атрибута href берем ссылку на контроллер django
+        var add_promotion_to_cart_url = $(this).attr("href");
+
+        // делаем post запрос через ajax не перезагружая страницу
+        $.ajax({
+            type: "POST",
+            url: add_promotion_to_cart_url,
+            data: {
+                promotion_id: promotion_id,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (data) {
+                // Сообщение
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                // Через 7сек убираем сообщение
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
+
+                // // Увеличиваем количество товаров в корзине (отрисовка в шаблоне)
+                // cartCount++;
+                // goodsInCartCount.text(cartCount);
+
+                // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
+                var cartItemsContainer = $("#cart-items-container");
+                cartItemsContainer.html(data.cart_with_promotion_html);
+            },
+
+            error: function (data) {
+                // Сообщение об ошибке
+                dangerMessage.html(data.responseJSON.message);
+                dangerMessage.fadeIn(400);
+                // Через 7сек убираем сообщение
+                setTimeout(function () {
+                    dangerMessage.fadeOut(400);
+                }, 7000);
+            },
+        });
+    });
+
+    // Ловим собыитие клика по кнопке добавить АКЦИЮ в корзину
+    $(document).on("click", ".delete-promotion-from-cart", function (e) {
+        // Блокируем его базовое действие
+        e.preventDefault();
+
+        // // Берем элемент счетчика в значке корзины и берем оттуда значение
+        // var goodsInCartCount = $("#goods-in-cart-count");
+        // var cartCount = parseInt(goodsInCartCount.text() || 0);
+
+        // Получаем id акции из атрибута data-promotion-id
+        var cart_id = $(this).data("cart-id");
+
+        // Из атрибута href берем ссылку на контроллер django
+        var delete_promotion_from_cart_url = $(this).attr("href");
+
+        // делаем post запрос через ajax не перезагружая страницу
+        $.ajax({
+            type: "POST",
+            url: delete_promotion_from_cart_url,
+            data: {
+                cart_id: cart_id,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (data) {
+                // Сообщение
+                successMessage.html(data.message);
+                successMessage.fadeIn(400);
+                setTimeout(400);
+                // Через 7сек убираем сообщение
+                setTimeout(function () {
+                    successMessage.fadeOut(400);
+                }, 7000);
+
+                // // Увеличиваем количество товаров в корзине (отрисовка в шаблоне)
+                // cartCount++;
+                // goodsInCartCount.text(cartCount);
+
+                // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
+                var cartItemsContainer = $("#cart-items-container");
+                cartItemsContainer.html(data.cart_items_html);
+            },
+
+            error: function (data) {
+                // Сообщение об ошибке
+                dangerMessage.html(data.responseJSON.message);
+                dangerMessage.fadeIn(400);
+                // Через 7сек убираем сообщение
+                setTimeout(function () {
+                    dangerMessage.fadeOut(400);
+                }, 7000);
+            },
+        });
+    });
 
 
     // Ловим собыитие клика по кнопке удалить товар из корзины

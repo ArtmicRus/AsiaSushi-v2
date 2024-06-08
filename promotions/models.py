@@ -19,6 +19,10 @@ class PromotionTerms(models.Model):
         verbose_name = 'Условие акции'
         verbose_name_plural = 'Условия акции'
 
+    def __str__(self) -> str:
+        if self.is_need_min_price:
+            return f'Для добавления акции требуется минимальная сумма = {self.min_price} Руб.'
+
 
 class Promotion(models.Model):
 
@@ -37,6 +41,9 @@ class Promotion(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name}'
+    
+    def get_promotion_products(self):
+        return PromotionProducts.filter(promotion=self)
 
 class PromotionProducts(models.Model):
 
@@ -49,3 +56,6 @@ class PromotionProducts(models.Model):
         # Имя которые мы хотим в админке (Альтернативное имя) для единственного и множ числа
         verbose_name = 'Акционный товар'
         verbose_name_plural = 'Товары для акций'
+
+    def __str__(self) -> str:
+        return f'Продут \"{self.product.name}\", для акции \"{self.promotion.name}\"'

@@ -1,9 +1,10 @@
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 
-from carts.models import CartItem
-from carts.utils import get_user_carts
+from carts.models import Cart, CartItem
+from carts.utils import get_user_cart_items
 from goods.models import Products
+from promotions.models import PromotionProducts
 
 
 def cart_add(request):
@@ -12,41 +13,76 @@ def cart_add(request):
 
     product = Products.objects.get(id=product_id)
 
+    # Надстройка Корзина для объединение Акций и Товаров в корзине
     if request.user.is_authenticated:
-        carts = CartItem.objects.filter(user=request.user, product=product)
 
-        if carts.exists():
-            cart = carts.first()
-            if cart:
-                cart.quantity += 1
-                cart.save()
+        # Берём определённый товар в корзине
+        cart_items = CartItem.objects.filter(user=request.user, product=product)
+
+
+        # Если хоть что то нашли то берём его как объект в переменную cart_item
+        if cart_items.exists():
+            cart_item = cart_items.first()
+
+            # Проверяем найден ли объект или нет и если найден то добавляем
+            if cart_item:
+                cart_item.quantity += 1
+                cart_item.save()
+                cart = cart_item.cart
+        # Если ничего не нашли создаём новый элемент корзины
         else:
-            CartItem.objects.create(user=request.user, product=product, quantity=1)
+
+            cart_items = CartItem.objects.filter(user=request.user)
+
+            if cart_items.exists():
+                cart_item = cart_items.first()
+                cart = cart_item.cart
+            else:
+                cart = Cart.objects.create()
+
+            CartItem.objects.create(cart=cart, user=request.user, product=product, quantity=1)
     else:
-        carts = CartItem.objects.filter(
-            session_key=request.session.session_key, 
+        # Находим содержимое строки-корзины
+        cart_items = CartItem.objects.filter(
+            session_key=request.session.session_key,
             product=product
             )
             
-
-        if carts.exists():
-            cart = carts.first()
-            if cart:
-                cart.quantity += 1
-                cart.save()
+        # Проверяем найден ли объект или нет и если найден то добавляем
+        if cart_items.exists():
+            cart_item = cart_items.first()
+            if cart_item:
+                cart_item.quantity += 1
+                cart_item.save()
+                cart = cart_item.cart
         else:
+            cart_items = CartItem.objects.filter(session_key=request.session.session_key)
+
+            if cart_items.exists():
+                cart_item = cart_items.first()
+                cart = cart_item.cart
+            else:
+                cart = Cart.objects.create()
+
+
             CartItem.objects.create(
+                cart=cart,
                 session_key=request.session.session_key, 
                 product=product, 
                 quantity=1
             )
     
-    user_cart= get_user_carts(request)
+    # Берём акционные предметы
+    if cart.promotion:
+        promotion_products = PromotionProducts.objects.filter(promotion = cart.promotion)
+
+    user_cart_items= get_user_cart_items(request)
 
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", 
-        {"carts": user_cart}, 
-        request=request
+        {"carts": user_cart_items,
+         "promotion_products": promotion_products},
+         request=request
     )
 
     response_data ={
@@ -60,18 +96,25 @@ def cart_add(request):
     #return redirect(request.META['HTTP_REFERER'])
 
 def cart_change(request):
-    cart_id = request.POST.get("cart_id")
+    cart_item_id = request.POST.get("cart_id")
     quantity = request.POST.get("quantity")
 
-    cart = CartItem.objects.get(id=cart_id)
+    cart_item = CartItem.objects.get(id=cart_item_id)
 
-    cart.quantity = quantity
-    cart.save()
+    cart_item.quantity = quantity
+    cart_item.save()
 
-    cart = get_user_carts(request)
+    # Карзина с акциями (если есть)
+    cart = cart_item.get_cart()
+
+    if cart.promotion:
+        promotion_products = PromotionProducts.objects.filter(promotion = cart.promotion)
+
+    cart_item = get_user_cart_items(request)
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", 
-        {"carts": cart}, 
+        {"carts": cart_item,
+         "promotion_products": promotion_products}, 
         request=request
     )
 
@@ -86,14 +129,21 @@ def cart_remove(request):
     
     cart_id = request.POST.get("cart_id")
 
-    cart = CartItem.objects.get(id=cart_id)
-    quantity = cart.quantity
-    cart.delete()
+    cart_item = CartItem.objects.get(id=cart_id)
+    quantity = cart_item.quantity
+    cart_item.delete()
 
-    user_cart = get_user_carts(request)
+    # Карзина с акциями (если есть)
+    cart = cart_item.get_cart()
+
+    if cart.promotion:
+        promotion_products = PromotionProducts.objects.filter(promotion = cart.promotion)
+
+    user_cart = get_user_cart_items(request)
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", 
-        {"carts": user_cart}, 
+        {"carts": user_cart,
+         "promotion_products": promotion_products}, 
         request=request
     )
 

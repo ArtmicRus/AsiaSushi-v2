@@ -16,14 +16,37 @@
         <div class="col-md-3">
             <img src="{{promotion.image.url}}" class="img-fluid rounded-start" alt="...">
         </div>
-        <div class="col-md-7">
+        <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title d-flex align-items-center justify-content-center">{{promotion.name}}</h5>
                 <p class="card-text">{{promotion.description}}</p>
+                <div class="mt-3">
+                    <h3>
+                        Условия добавления акции:
+                    </h3>
+                    <div class="mx-4 row">
+                        {% if promotion.promotion_terms.is_need_min_price %}
+                        <div class="col-1">
+                            • 
+                        </div>
+                        <p class="col-8 d-flex align-content-start h-2">
+                            Сумма заказа должна превышать {{promotion.promotion_terms.min_price}} Руб.
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% comment %} <p class="card-text text-danger d-flex justify-content-buttom justify-content-center">
+                    Можно использовать не более 1 акции за заказ
+                </p> {% endcomment %}
             </div>
-            <p class="card-text text-danger d-flex align-bottom justify-content-center">
-                Можно использовать не более 1 акции за покупку
-            </p>
+        </div>
+        <div class="col-md-1 d-flex justify-content-center">
+            <button href="{% url "promotions:promotion_add_to_cart" %}" class="align-items-center btn add-promotion-to-cart"
+                data-promotion-id="{{ promotion.id }}">
+                    {% csrf_token %}
+                    <img class="btn btn-light" src="{% static "deps/icons/bag-plus.svg" %}"
+                            alt="Catalog Icon">
+            </button>
         </div>
     </div>
 </div>
