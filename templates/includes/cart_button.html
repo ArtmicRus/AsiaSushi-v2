@@ -1,8 +1,11 @@
 {% load static %}
 {% load carts_tags %}
+{% load promotions_tags %}
 
 {% comment "" %}Вызываем шаблонный тэг и помещаем его результат в переменную carts{% endcomment %}
 {% user_cart_items request as cart_items %}
+
+{% user_promotion_items request cart_items as promotion_products %}
 
 {% user_cart cart_items as main_cart %}
 

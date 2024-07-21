@@ -145,8 +145,14 @@ $(document).ready(function () {
                 // goodsInCartCount.text(cartCount);
 
                 // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
-                var cartItemsContainer = $("#cart-items-container");
-                cartItemsContainer.html(data.cart_items_html);
+                // var cartItemsContainer = $("#cart-items-container");
+                // cartItemsContainer.html(data.cart_items_html);
+
+                var promotionProductsContainer = $("#promotion-products");
+                promotionProductsContainer.html(data.promotion_items_html)
+
+                var promotionProductsContainer = $("#promotion-products-header");
+                promotionProductsContainer.html(data.promotion_items_html_for_header)
             },
 
             error: function (data) {

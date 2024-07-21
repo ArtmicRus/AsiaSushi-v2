@@ -13,12 +13,21 @@ def cart_add(request):
 
     product = Products.objects.get(id=product_id)
 
+    cart = None
+
     # Надстройка Корзина для объединение Акций и Товаров в корзине
     if request.user.is_authenticated:
 
-        # Берём определённый товар в корзине
-        cart_items = CartItem.objects.filter(user=request.user, product=product)
+        cart = Cart.objects.filter(user=request.user)
 
+        if cart.exists():
+            cart = Cart.objects.filter(user=request.user).first()
+        else:
+            cart = Cart.objects.create(user=request.user)
+
+
+        # Берём определённый товар в корзине
+        cart_items = CartItem.objects.filter(cart=cart, product=product)
 
         # Если хоть что то нашли то берём его как объект в переменную cart_item
         if cart_items.exists():
@@ -28,20 +37,12 @@ def cart_add(request):
             if cart_item:
                 cart_item.quantity += 1
                 cart_item.save()
-                cart = cart_item.cart
         # Если ничего не нашли создаём новый элемент корзины
         else:
+            CartItem.objects.create(cart=cart, product=product, quantity=1)
 
-            cart_items = CartItem.objects.filter(user=request.user)
-
-            if cart_items.exists():
-                cart_item = cart_items.first()
-                cart = cart_item.cart
-            else:
-                cart = Cart.objects.create()
-
-            CartItem.objects.create(cart=cart, user=request.user, product=product, quantity=1)
     else:
+
         # Находим содержимое строки-корзины
         cart_items = CartItem.objects.filter(
             session_key=request.session.session_key,
@@ -57,13 +58,11 @@ def cart_add(request):
                 cart = cart_item.cart
         else:
             cart_items = CartItem.objects.filter(session_key=request.session.session_key)
-
+            
             if cart_items.exists():
-                cart_item = cart_items.first()
-                cart = cart_item.cart
+                cart = cart_items.first().cart
             else:
                 cart = Cart.objects.create()
-
 
             CartItem.objects.create(
                 cart=cart,
@@ -72,15 +71,18 @@ def cart_add(request):
                 quantity=1
             )
     
+
     # Берём акционные предметы
     if cart.promotion:
         promotion_products = PromotionProducts.objects.filter(promotion = cart.promotion)
+    else:
+        promotion_products = None
 
     user_cart_items= get_user_cart_items(request)
 
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", 
-        {"carts": user_cart_items,
+        {"cart_items": user_cart_items,
          "promotion_products": promotion_products},
          request=request
     )
@@ -104,16 +106,18 @@ def cart_change(request):
     cart_item.quantity = quantity
     cart_item.save()
 
-    # Карзина с акциями (если есть)
+    # Корзина с акциями (если есть)
     cart = cart_item.get_cart()
 
     if cart.promotion:
         promotion_products = PromotionProducts.objects.filter(promotion = cart.promotion)
+    else:
+        promotion_products = None
 
     cart_item = get_user_cart_items(request)
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", 
-        {"carts": cart_item,
+        {"cart_items": cart_item,
          "promotion_products": promotion_products}, 
         request=request
     )
@@ -127,9 +131,9 @@ def cart_change(request):
 
 def cart_remove(request):
     
-    cart_id = request.POST.get("cart_id")
+    cart_item_id = request.POST.get("cart_id")
 
-    cart_item = CartItem.objects.get(id=cart_id)
+    cart_item = CartItem.objects.get(id=cart_item_id)
     quantity = cart_item.quantity
     cart_item.delete()
 
@@ -138,11 +142,13 @@ def cart_remove(request):
 
     if cart.promotion:
         promotion_products = PromotionProducts.objects.filter(promotion = cart.promotion)
+    else:
+        promotion_products = None
 
     user_cart = get_user_cart_items(request)
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", 
-        {"carts": user_cart,
+        {"cart_items": user_cart,
          "promotion_products": promotion_products}, 
         request=request
     )

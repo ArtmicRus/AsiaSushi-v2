@@ -44,19 +44,17 @@
             </li>
         </ul>
     {% endfor %}
-    {% if promotion_products %}
+    {% if promotion_products and cart_items and not order %}
     <div class="card-header">
         <h5 class="card-title text-center">
             Акция уже добавлена в корзину 
             <br>
             Выберите ваш подарок при оформлении заказа!
             <br>
-            <div class="text-warning">
-                Выбранный вами товар будет отображаться как обычный после оформления заказа
-            </div>
         </h5>
     </div>
-    <ul class="list-group list-group-flush">
+    {% endif %} 
+    {% comment %} <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <div class="d-flex align-content-center justify-content-center row">
                 {% for promotion_item in promotion_products %}
@@ -69,28 +67,23 @@
             </div>
             {% for cart in main_cart %}
             <div class="col-1 p-0">
-                <div class="p-3 m-3">
-                    {% if cart.promotion %}
-                        {{ cart.promotion.name }}
-                    {% endif %}
-                </div>
                 <button href="{% url "promotions:promotion_delete_from_cart" %}" class="align-items-center btn delete-promotion-from-cart"
                 data-cart-id="{{ cart.id }}">
                     {% csrf_token %}
                     <img class="btn btn-light" src="{% static "deps/icons/trash3-fill.svg" %}"
                             alt="Catalog Icon">
                 </button>
-                {% comment %} <a href="{% url "cart:cart_remove" %}" class="remove-from-cart" 
+                 <a href="{% url "cart:cart_remove" %}" class="remove-from-cart" 
                 data-cart-id="{{ cart.id }}">
                     {% csrf_token %}
                     <img class="btn" src="{% static "deps/icons/trash3-fill.svg" %}"
                         alt="Catalog Icon">
-                </a> {% endcomment %}
+                </a> 
             </div>
             {% endfor %}
         </li>
     </ul>
-    {% endif %}
+    {% endif %} {% endcomment %}
     
 </div>
 <div class="card mb-3 shadow-lg">
@@ -99,7 +92,7 @@
         <h4 class="float-left"><strong>{{ cart_items.total_price }} Руб.</strong></h4>
     </div>
 </div>
-{% if carts and not order %}
+{% if cart_items and not order %}
     <a class="btn btn-dark" href="{% url "orders:create_order" %}">
         Перейти к оформлению заказа
     </a>

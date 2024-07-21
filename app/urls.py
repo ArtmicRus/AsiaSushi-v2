@@ -32,11 +32,5 @@ urlpatterns = [
     path('promotions/', include('promotions.urls', namespace='promotions')),
 ]
 
-# if settings.DEBUG:
-#     urlpatterns += [
-#         # Дебаг тулбар для джанго
-#         path("__debug__/", include("debug_toolbar.urls")),
-#     ]
-
 #Без этого не работают картинки так что не удалять
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

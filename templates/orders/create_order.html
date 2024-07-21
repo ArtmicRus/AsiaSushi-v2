@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load carts_tags %}
+{% load promotions_tags %}
 
 {% block content %}
 <div class=" bg-white p-4 mb-4 mx-2 rounded custom-shadow col-8 mx-auto">
@@ -8,7 +9,9 @@
         <h3 class="text-center mb-4">Оформление заказа</h3>
         <div class="container" id="cart-items-container">
             <!-- Разметка корзины -->
-            {% user_carts request as carts %}
+            {% user_cart_items request as cart_items %}
+            {% user_promotion_items request cart_items as promotion_products %}
+            {% user_cart cart_items as main_cart %}
             {% include "carts/includes/included_cart.html" %}
             <!-- Закончилась разметка корзины -->
         </div>
@@ -17,10 +20,12 @@
     <div class="container">
         <h3 class="text-center">Детали заказа</h3>
         <div class="card mb-3">
+            {% include "promotions/includes/order_promotion_header.html" %}
             <div class="card-body">
                 <form action="{% url "orders:create_order" %}" method="post">
                     {% csrf_token %}
                     <div class="row">
+                        {% include "promotions/includes/promotion_items_with_delete_button.html" %}
                         <div class="col-md-6 mb-3">
                             <label for="id_first_name" class="form-label">Имя*:</label>
                             <input type="text" class="form-control" id="id_first_name"
@@ -40,7 +45,7 @@
                                     <div class="alert alert-danger alert-dismissible fade show">{{form.phone_number.errors}}</div>
                                 {% endif %}
                         </div>
-                        <div class="col-md-12 mb-3">
+                        <div class="col-md-12 mb-1">
                             <label for="delivery" class="form-label">Способ доставки: </label>
                             <div class="form-check form-check-inline mx-2">
                                 <input class="form-check-input" type="radio" name="requires_delivery"
@@ -66,17 +71,17 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Способ оплаты: </label>
-                                <div class="form-check form-check-inline mx-2">
+                                {% comment %} <div class="form-check form-check-inline mx-2">
                                     <input class="form-check-input" type="radio" name="payment_on_get"
                                         id="id_payment_on_get_0" value="0" checked>
                                     <label class="form-check-label" for="id_payment_on_get_0">Оплата
                                         картой</label>
-                                </div>
+                                </div> {% endcomment %}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="payment_on_get"
-                                        id="id_payment_on_get_1" value="1">
+                                        id="id_payment_on_get_1" value="1" checked>
                                     <label class="form-check-label" for="id_payment_on_get_1">Наличными/картой
-                                        при плучении</label>
+                                        при получении</label>
                                         {% if form.payment_on_get.errors %}
                                             <div class="alert alert-danger alert-dismissible fade show">{{form.payment_on_get.errors}}</div>
                                         {% endif %}

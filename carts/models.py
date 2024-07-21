@@ -20,6 +20,7 @@ class CartItemQueryset(models.QuerySet):
 class Cart(models.Model):
 
     promotion = models.ForeignKey(to=Promotion, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Акция')
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE,blank=True, null=True, verbose_name='Пользователь')
 
     class Meta:
         db_table = 'Carts'
@@ -29,7 +30,6 @@ class Cart(models.Model):
 # Элементы корзины 
 class CartItem(models.Model):
 
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE,blank=True, null=True, verbose_name='Пользователь')
     cart = models.ForeignKey(to=Cart, on_delete=models.CASCADE,blank=True, null=True, verbose_name='Корзина')
     product = models.ForeignKey(to=Products, on_delete=models.CASCADE,verbose_name='Товар')
     quantity = models.PositiveSmallIntegerField(default=0, verbose_name='Количество')
@@ -51,8 +51,8 @@ class CartItem(models.Model):
         return self.cart
 
     def __str__(self): # В каком виде выводить информацию
-        if self.user:
-            return f"Корзина {self.user.username} | Товар {self.product.name} | Количество {self.quantity}"
+        if self.cart.user:
+            return f"Корзина {self.cart.user.username} | Товар {self.product.name} | Количество {self.quantity}"
         
         return f"Анонимная корзина Товар {self.product.name} | Количество {self.quantity}"
     

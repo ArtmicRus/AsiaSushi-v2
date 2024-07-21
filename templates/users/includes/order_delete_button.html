@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="d-flex justify-content-end pt-2">
-    <button type="button" class="btn btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{order.id}}">
+    <button type="button" class="btn btn-danger rounded {% if order.order_status.id > 1 %} disabled {% endif %}" data-bs-toggle="modal" data-bs-target="#deleteOrderModal{{order.id}}">
         Отменить заказ
     </button>
 </div>

@@ -18,7 +18,8 @@ class CreateOrderForm(forms.Form):
             ("0", False),
             ("1", True),
         ],)
-    
+    promotion_item_id = forms.IntegerField(required=False)
+
     # Пользовательский валидатор
     # Нужно писать с припиской clean_название поля
     def clean_phone_number(self):

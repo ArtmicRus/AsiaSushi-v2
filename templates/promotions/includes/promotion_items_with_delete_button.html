@@ -1,0 +1,31 @@
+{% load static %}
+
+{% if promotion_products %}
+<ul id="promotion-products" class="list-group list-group-flush">
+    <li class="list-group-item">
+        <div>
+            Выберите акционный товар:
+        </div>
+        <div class="col-md-10 mb-3">
+            <div class="d-flex align-content-center justify-content-center row">
+                {% for promotion_item in promotion_products %}
+                <div class="form-check ">
+                    <input class="form-check-input mx-2" type="radio" id="{{promotion_item.pk}}" name="promotion_item_id"
+                        value="{{promotion_item.pk}}" checked/>
+                    <label for="{{promotion_item.pk}}">{{promotion_item.product.name}}</label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% for cart in main_cart %}
+        <div class="col-md-12 mb-4 d-flex justify-content-center ">
+                <button href="{% url "promotions:promotion_delete_from_cart" %}" class="btn btn-danger  delete-promotion-from-cart"
+                data-cart-id="{{ cart.id }}">
+                    {% csrf_token %}
+                    Удалить акцию из корзины
+                </button>
+        </div>
+        {% endfor %}
+    </li>
+</ul>
+{% endif %}

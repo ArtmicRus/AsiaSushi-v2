@@ -8,6 +8,7 @@ from carts.models import Cart, CartItem
 from orders.forms import CreateOrderForm
 from orders.models import Order, OrderItem, OrderStatus
 from orders.utils import create_statuses
+from promotions.models import PromotionProducts
 
 @login_required 
 def create_order(request):
@@ -19,13 +20,21 @@ def create_order(request):
                 # То есть всё что ниже должно быть сделано или откат всего
                 with transaction.atomic():
                     user = request.user
-                    cart_items = CartItem.objects.filter(user=user)
+                    cart = Cart.objects.filter(user=user).first()
+
+                    cart_items = CartItem.objects.filter(cart=cart)
 
                     if cart_items.exists():
                         # Проверяем есть ли стутусы
                         start_status = OrderStatus.objects.filter(name='В обработке')
                         if not start_status: # если статусов нет то создаём
                             create_statuses()
+
+                        # Есть к корзине добавена Акция ищем акционные товар выбранный при заказе
+                        if cart.promotion:
+                            promotion_item = PromotionProducts.objects.filter(
+                                id=form.cleaned_data['promotion_item_id']
+                                ).first()
 
                         # Создать заказ
                         order = Order.objects.create(
@@ -36,21 +45,12 @@ def create_order(request):
                             payment_on_get=form.cleaned_data['payment_on_get'],
                             order_status_id=1,
                         )
-                        # Создать заказанные товары
+                        # Создать заказанные основные товары
                         for cart_item in cart_items:
                             product=cart_item.product
                             name=cart_item.product.name
                             price=cart_item.product.self_price()
                             quantity=cart_item.quantity
-
-
-                            # Количество товаров но так как вырезал количество то не нужно
-                            # if product.quantity < quantity:
-                            #     raise ValidationError(f'Недостаточное количество товара {name} на складе\
-                            #                            В наличии - {product.quantity}')
-
-                            # product.quantity -= quantity
-                            # product.save()
 
                             OrderItem.objects.create(
                                 order=order,
@@ -59,6 +59,16 @@ def create_order(request):
                                 price=price,
                                 quantity=quantity,
                             )
+
+                        # Создаём тавар заказа из акционного если есть акция
+                        if cart.promotion:
+                            OrderItem.objects.create(
+                                    order=order,
+                                    product=promotion_item.product,
+                                    name=promotion_item.product.name,
+                                    price=0,
+                                    quantity=1,
+                                )
 
                         # Очистить корзину пользователя после создания заказа
                         cart_items.delete()

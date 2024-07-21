@@ -88,8 +88,10 @@ def promotion_delete_from_cart(request):
 
     cart = Cart.objects.get(id=cart_id)
     cart.promotion = None
+    cart.save()
 
     user_cart = get_user_cart_items(request)
+    promotion_products = None
 
     cart_items_html = render_to_string(
         "carts/includes/included_cart.html", 
@@ -97,10 +99,28 @@ def promotion_delete_from_cart(request):
         request=request
     )
 
+    promotion_items_html = render_to_string(
+        "promotions/includes/promotion_items_with_delete_button.html",
+        {
+            "promotion_products":promotion_products
+        },
+        request=request
+    )
+
+    promotion_items_html_for_header = render_to_string(
+        "promotions/includes/promotion_items_with_delete_button.html",
+        {
+            "promotion_products":promotion_products
+        },
+        request=request
+    )
+
     # Структура Json
     response_data = {
         "message": "Акция удалена из корзины",
-        "cart_items_html": cart_items_html
+        "cart_items_html": cart_items_html,
+        "promotion_items_html": promotion_items_html,
+        "promotion_items_html_for_header": promotion_items_html_for_header
     }
 
     return JsonResponse(response_data)

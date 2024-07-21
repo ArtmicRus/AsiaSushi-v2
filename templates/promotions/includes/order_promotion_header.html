@@ -1,0 +1,13 @@
+{% load static %}
+
+<div id="promotion-products-header">
+    {% if promotion_products %}
+    <div class="card-header" >
+        <h5 class="text-center">
+            <div class="text-danger">
+                Выбранный вами товар по акции будет отображаться как обычный товар, со стоимостью 0 руб. после оформления заказа
+            </div>
+        </h5>
+    </div>
+    {% endif %}
+</div>

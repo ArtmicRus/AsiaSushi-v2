@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 
-from carts.models import CartItem
+from carts.models import Cart, CartItem
 from orders.models import Order, OrderItem
 from users.forms import ProfileForm, UserLoginForm, UserRegistrationForm
 
@@ -29,7 +29,43 @@ def login(request):
 
                 # Перезапись ключа сессии на авторизовавшегося пользователя
                 if session_key:
-                    CartItem.objects.filter(session_key=session_key).update(user=user)
+                    # Проверяем нет ли у пользователя корзины
+                    user_cart = Cart.objects.filter(user=request.user).first()
+                    if user_cart:
+                        cart_items_session = CartItem.objects.filter(session_key=session_key)
+                        if cart_items_session.exists():
+                            # Получаем первую строку корзины из сессии чтобы найти её корзину
+                            cart_item = cart_items_session.first()
+                            old_cart = Cart.objects.filter(id=cart_item.cart.id).first()
+
+                            # Берём товары в корзине на аккаунте
+                            cart_items_user = CartItem.objects.filter(cart=user_cart)
+
+                            # Если есть эоементы корзины с одинаковыми продуктами соединяем их в одну пользовательскую корзину после авторизации
+                            for cart_item_user in cart_items_user:
+                                for cart_item_session in cart_items_session:
+                                    if cart_item_user.product == cart_item_session.product:
+                                        cart_item_user.quantity = cart_item_user.quantity + cart_item_session.quantity
+                                        cart_item_user.save()
+
+                            for cart_item_user in cart_items_user:
+                                for cart_item_session in cart_items_session:
+                                    if cart_item_user.product == cart_item_session.product:
+                                        cart_item_session.delete()
+
+                            cart_items_session.update(cart=user_cart)
+                            old_cart.delete()
+
+                                
+                    else:
+                        # Ищем все элементы корзины
+                        cart_items = CartItem.objects.filter(session_key=session_key)
+                        if cart_items.exists():
+                            cart_item = cart_items.first()
+                            cart = Cart.objects.filter(id=cart_item.cart.id).first()
+                            #Обновляем пользователя для корзины (тут она должна быть одна в списке)
+                            cart.user = user
+                            cart.save()
 
                 redirect_page = request.POST.get('next', None)
                 if redirect_page and redirect_page != reverse('user:logout'):
@@ -60,7 +96,14 @@ def registration(request):
 
             # Перезапись ключа сессии на авторизовавшегося пользователя
             if session_key:
-                CartItem.objects.filter(session_key=session_key).update(user=user)
+                    # Ищем все элементы корзины
+                cart_items = CartItem.objects.filter(session_key=session_key)
+                if cart_items.exists():
+                    cart_item = cart_items.first()
+                    cart = Cart.objects.filter(id=cart_item.cart.id).first()
+                    #Обновляем пользователя для корзины (тут она должна быть одна в списке)
+                    cart.user = user
+                    cart.save()
 
             messages.success(request, f"{user.username}, Вы успешно зарегистрированы и вошли в аккаунт")
             return HttpResponseRedirect(reverse('main:index'))
